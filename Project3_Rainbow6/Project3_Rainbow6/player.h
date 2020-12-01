@@ -15,6 +15,7 @@ public:
 	string getName();
 	float getOperatorWinRate(string operatorName, int map);
 	float getOperatorWinRate(string operatorName); //return the average of each map
+	int getNumberOfMaps();
 };
 
 player::player(string name, float minWinRate, float maxWinRate) {
@@ -53,4 +54,8 @@ float player::getOperatorWinRate(string operatorName) {
 		result += operatorWinRate[operatorName][i];
 	}
 	return result / (i + 1);
+}
+
+int player::getNumberOfMaps() {
+	return numOfMaps;
 }
