@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database.h" />
+    <ClInclude Include="HashMap.h" />
     <ClInclude Include="metaTeamComps.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="player.h" />
