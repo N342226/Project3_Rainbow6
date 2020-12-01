@@ -31,7 +31,10 @@ public:
 HashMap::HashMap() {
 	this->bucketsTaken = 0.0;
 	this->buckets = 10.0;
-	this->loadFactor = 0.0;
+	this->loadFactor = 0.75;
+	vector<player>pusher;
+		for (int i = 0; i < buckets; i++)
+			this->hashMapBuckets.push_back(pusher);
 }
 
 vector<vector<player>>& HashMap::getHMap() {

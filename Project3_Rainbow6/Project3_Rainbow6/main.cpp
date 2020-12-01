@@ -26,7 +26,7 @@ int main() {
 		cout << dbResult[i].getName() << "\nZero win rate: " << dbResult[i].getOperatorWinRate("Zero") << endl << endl;;
 	}
 
-	HashMap table;
+	HashMap table = HashMap();
 	for (int i = 0; i < dbResult.size(); i++) {
 		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
 	}
