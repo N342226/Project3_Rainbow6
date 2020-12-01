@@ -60,3 +60,4 @@ float player::getOperatorWinRate(string operatorName) {
 	}
 	return result / (i + 1);
 }
+//Comment
