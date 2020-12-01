@@ -14,7 +14,7 @@ int main() {
 	vector<player> examplePlayers;
 
 	for (int i = 0; i < exampleNames.size(); i++) {
-		examplePlayers.push_back(player(exampleNames[i], .5, 2));
+		examplePlayers.push_back(player(exampleNames[i]));
 	}
 
 	database db = database(examplePlayers, 10);
@@ -22,7 +22,13 @@ int main() {
 	vector<player> dbResult = db.getDatabase();
 
 	for (int i = 0; i < dbResult.size(); i++) {
-		cout << dbResult[i].getName() << "\nZero win rate: " << dbResult[i].getOperatorWinRate("Zero") << endl << endl;;
+		cout << dbResult[i].getName() << endl;
+
+		for (int j = 0; j < operatorsSize; j++) {
+			cout << operators[j] << " win rate: " << dbResult[i].getOperatorWinRate(operators[j]) << endl;
+		}
+
+		cout << endl;
 	}
 
 	return 0;
