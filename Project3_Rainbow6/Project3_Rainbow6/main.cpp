@@ -22,7 +22,7 @@ int main() {
 	
 	vector<player> dbResult = db.getDatabase();
 
-	for (int i = 0; i < dbResult.size(); i++) {
+	/*for (int i = 0; i < dbResult.size(); i++) {
 		cout << dbResult[i].getName() << endl;
 
 		for (int j = 0; j < operatorsSize; j++) {
@@ -30,14 +30,12 @@ int main() {
 		}
 
 		cout << endl;
-	}
+	}*/
 
-	HashMap table;
+	HashMap table = HashMap();
 	for (int i = 0; i < dbResult.size(); i++) {
 		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
 	}
-
-
 
 	return 0;
 }

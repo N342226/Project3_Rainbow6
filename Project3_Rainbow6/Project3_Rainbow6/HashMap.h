@@ -31,10 +31,13 @@ public:
 HashMap::HashMap() {
 	this->bucketsTaken = 0.0;
 	this->buckets = 10.0;
-	this->loadFactor = 0.0;
+	this->loadFactor = 0.75;
+	vector<player>pusher;
+	for (int i = 0; i < buckets; i++)
+		this->hashMapBuckets.push_back(pusher);
 }
 
-vector<vector<player>>& HashMap::getHMap() {
+vector<vector<player>>& HashMap::getHMap() {//
 	return this->hashMapBuckets;
 }
 vector<vector<player>> HashMap::insertPlayer(player insert, vector<vector<player>> hash) {
@@ -49,13 +52,13 @@ vector<vector<player>> HashMap::insertPlayer(player insert, vector<vector<player
 }
 
 bool HashMap::removePlayer(string name) {
-	for (int i = 0; i < this->hashMapBuckets.size(); i++){
+	for (int i = 0; i < this->hashMapBuckets.size(); i++) {
 		for (int z = 0; z < this->hashMapBuckets.at(i).size(); z++) {
 			if (this->hashMapBuckets.at(i).at(z).getName() == name)
 			{
-				this->hashMapBuckets.at(i).erase(this->hashMapBuckets.at(i).begin()+z);
+				this->hashMapBuckets.at(i).erase(this->hashMapBuckets.at(i).begin() + z);
 			}
-		}	
+		}
 	}
 	return false;
 }
@@ -63,11 +66,11 @@ bool HashMap::removePlayer(string name) {
 int HashMap::hashPlayer(player unHashed, int buckets) {
 	long sum = 0;
 	long factor = 1;
-	for (int i = 0; i < unHashed.getName().length(); i++){
-		if (i % 4 == 0){
+	for (int i = 0; i < unHashed.getName().length(); i++) {
+		if (i % 4 == 0) {
 			factor = 1;
 		}
-		else{
+		else {
 			factor *= 128;
 		}
 		sum = sum + unHashed.getName().at(i) * factor;
@@ -77,8 +80,8 @@ int HashMap::hashPlayer(player unHashed, int buckets) {
 }
 
 player HashMap::retrievePlayerInfo(string name) {
-	for (int i = 0; i < this->hashMapBuckets.size(); i++){
-		for (int z = 0; z < this->hashMapBuckets.at(i).size(); z++){
+	for (int i = 0; i < this->hashMapBuckets.size(); i++) {
+		for (int z = 0; z < this->hashMapBuckets.at(i).size(); z++) {
 			string check = hashMapBuckets.at(i).at(z).getName();
 			if (check == name)
 			{
@@ -92,10 +95,10 @@ vector<vector<player>> HashMap::resize() {
 	vector<player> z;
 	this->buckets *= 2;
 	vector<vector<player>> newHashMap;
-	for (int i = 0; i < this->buckets; i++){
+	for (int i = 0; i < this->buckets; i++) {
 		newHashMap.push_back(z);
 	}
-	for (int i = 0; i < this->hashMapBuckets.size(); i++){
+	for (int i = 0; i < this->hashMapBuckets.size(); i++) {
 		for (int j = 0; j < this->hashMapBuckets.at(i).size(); j++)
 			insertPlayer(this->hashMapBuckets.at(i).at(j), newHashMap);
 	}
