@@ -3,7 +3,6 @@
 #include <unordered_map>
 using namespace std;
 
-//test
 class metaTeamComps {
 private:
 	unordered_map<string, pair<string*, string*>> metaTeams; // <map, <defense, attack>>
