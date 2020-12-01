@@ -38,7 +38,7 @@ void database::fillDb(int size) {
         string name = randomString(rand() % 10 + 5); //random string between 5 and 15 characters
         if (usedNames.find(name) == usedNames.end()) {
             usedNames.insert(name);
-            db.push_back(player(name, .5, 2));
+            db.push_back(player(name));
         }
     }
 }
