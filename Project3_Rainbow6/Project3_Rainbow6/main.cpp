@@ -1,6 +1,7 @@
 #include <iostream>
 #include "database.h"
 #include "metaTeamComps.h"
+#include "HashMap.h"
 
 pair<string*, string*> findTeamComp(string map, int team, string* usernames) { //<usernames, operators>
 	metaTeamComps metaTeams = metaTeamComps();
@@ -25,5 +26,9 @@ int main() {
 		cout << dbResult[i].getName() << "\nZero win rate: " << dbResult[i].getOperatorWinRate("Zero") << endl << endl;;
 	}
 
+	HashMap table;
+	for (int i = 0; i < dbResult.size(); i++) {
+		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
+	}
 	return 0;
 }
