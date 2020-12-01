@@ -98,6 +98,7 @@ vector<vector<player>> HashMap::resize() {
 	for (int i = 0; i < this->buckets; i++){
 		newHashMap.push_back(z);
 	}
+	this->bucketsTaken = 0;
 	for (int i = 0; i < this->hashMapBuckets.size(); i++){
 		for (int j = 0; j < this->hashMapBuckets.at(i).size(); j++)
 			insertPlayer(this->hashMapBuckets.at(i).at(j), newHashMap);

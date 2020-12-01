@@ -9,7 +9,7 @@ pair<string*, string*> findTeamComp(string map, int team, string* usernames) { /
 
 	return { usernames, operators };
 }
-
+//
 int main() {
 	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
 	vector<player> examplePlayers;
@@ -29,6 +29,7 @@ int main() {
 	HashMap table = HashMap();
 	for (int i = 0; i < dbResult.size(); i++) {
 		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
+		cout << i << endl;
 	}
 
 
