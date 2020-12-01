@@ -30,5 +30,8 @@ int main() {
 	for (int i = 0; i < dbResult.size(); i++) {
 		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
 	}
+
+
+
 	return 0;
 }

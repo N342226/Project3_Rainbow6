@@ -30,7 +30,7 @@ public:
 
 HashMap::HashMap() {
 	this->bucketsTaken = 0.0;
-	this->buckets = 0.0;
+	this->buckets = 10.0;
 	this->loadFactor = 0.0;
 }
 
@@ -38,6 +38,7 @@ vector<vector<player>>& HashMap::getHMap() {
 	return this->hashMapBuckets;
 }
 vector<vector<player>> HashMap::insertPlayer(player insert, vector<vector<player>> hash) {
+	this->bucketsTaken++;
 	int index = hashPlayer(insert, this->buckets); //grabs the index the player should be inserted in
 	hash.at(index).push_back(insert); //adds the player into the hashmap
 	if (this->bucketsTaken / this->buckets >= loadFactor) // checks if needs to be resized
