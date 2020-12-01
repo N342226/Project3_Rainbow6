@@ -1,12 +1,12 @@
 #pragma once
 #include "player.h"
-#include <unordered_map>
+#include <unordered_set>
 using namespace std;
 
 class database {
 private:
 	vector<player> db;
-    vector<string> usedNames;
+    unordered_set<string> usedNames; //O(1) search time
 
     string randomString(int n);
     void fillDb(int size);
@@ -36,7 +36,8 @@ string database::randomString(int n)
 void database::fillDb(int size) {
     while (db.size() <= size) {
         string name = randomString(rand() % 10 + 5); //random string between 5 and 15 characters
-        if (find(usedNames.begin(), usedNames.end(), name) == usedNames.end()) { //this may take awhile
+        if (usedNames.find(name) == usedNames.end()) {
+            usedNames.insert(name);
             db.push_back(player(name, .5, 2));
         }
     }
