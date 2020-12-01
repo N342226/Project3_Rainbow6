@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Hashmap
+class HashMap
 {
 private:
 	double bucketsTaken;
@@ -18,31 +18,37 @@ private:
 	vector<vector<player>> hashMapBuckets;
 
 public:
-	Hashmap();
+	HashMap();
 
-	void insertPlayer(player, vector<vector<player>>&);
+	vector<vector<player>>& getHMap();
+	vector<vector<player>> insertPlayer(player, vector<vector<player>>);
 	bool removePlayer(string name);
 	int hashPlayer(player, int);
 	player retrievePlayerInfo(string);
 	vector<vector<player>> resize();
 };
 
-Hashmap::Hashmap() {
+HashMap::HashMap() {
 	this->bucketsTaken = 0.0;
-	this->buckets = 0.0;
+	this->buckets = 10.0;
 	this->loadFactor = 0.0;
 }
 
-void Hashmap::insertPlayer(player insert, vector<vector<player>>& hash) {
+vector<vector<player>>& HashMap::getHMap() {
+	return this->hashMapBuckets;
+}
+vector<vector<player>> HashMap::insertPlayer(player insert, vector<vector<player>> hash) {
+	this->bucketsTaken++;
 	int index = hashPlayer(insert, this->buckets); //grabs the index the player should be inserted in
 	hash.at(index).push_back(insert); //adds the player into the hashmap
 	if (this->bucketsTaken / this->buckets >= loadFactor) // checks if needs to be resized
 	{
 		hash = resize();
 	}
+	return hash;
 }
 
-bool Hashmap::removePlayer(string name) {
+bool HashMap::removePlayer(string name) {
 	for (int i = 0; i < this->hashMapBuckets.size(); i++){
 		for (int z = 0; z < this->hashMapBuckets.at(i).size(); z++) {
 			if (this->hashMapBuckets.at(i).at(z).getName() == name)
@@ -54,7 +60,7 @@ bool Hashmap::removePlayer(string name) {
 	return false;
 }
 
-int Hashmap::hashPlayer(player unHashed, int buckets) {
+int HashMap::hashPlayer(player unHashed, int buckets) {
 	long sum = 0;
 	long factor = 1;
 	for (int i = 0; i < unHashed.getName().length(); i++){
@@ -70,7 +76,7 @@ int Hashmap::hashPlayer(player unHashed, int buckets) {
 	return (int)sum;
 }
 
-player Hashmap::retrievePlayerInfo(string name) {
+player HashMap::retrievePlayerInfo(string name) {
 	for (int i = 0; i < this->hashMapBuckets.size(); i++){
 		for (int z = 0; z < this->hashMapBuckets.at(i).size(); z++){
 			string check = hashMapBuckets.at(i).at(z).getName();
@@ -82,7 +88,7 @@ player Hashmap::retrievePlayerInfo(string name) {
 	}
 }
 
-vector<vector<player>> Hashmap::resize() {
+vector<vector<player>> HashMap::resize() {
 	vector<player> z;
 	this->buckets *= 2;
 	vector<vector<player>> newHashMap;
