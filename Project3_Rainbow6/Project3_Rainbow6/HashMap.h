@@ -89,6 +89,9 @@ player HashMap::retrievePlayerInfo(string name) {
 			}
 		}
 	}
+	cout << "Player " << name << " was not found" << endl;
+	player empty;
+	return empty;
 }
 
 vector<vector<player>> HashMap::resize() {
