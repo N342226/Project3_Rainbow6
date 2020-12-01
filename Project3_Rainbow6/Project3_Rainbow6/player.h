@@ -8,8 +8,10 @@ class player {
 private:
 	unordered_map<string, float> operatorKd;
 	float minKd, maxKd;
+	string name;
 public:
 	player();
+	string getName();
 };
 
 player::player() {
@@ -20,4 +22,8 @@ player::player() {
 		float kd = minKd + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxKd - minKd)));
 		operatorKd[operators[i]] = kd;
 	}
+}
+
+string player::getName() {
+	return this->name;
 }
