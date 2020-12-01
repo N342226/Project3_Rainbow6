@@ -11,3 +11,5 @@ pair<string*, string*> findTeamComp(string map, int team, string* usernames) { /
 int main() {
 	return 0;
 }
+
+//CAOSINDOSAKDNFLSKDNFLKSDNFLKDSNfl
