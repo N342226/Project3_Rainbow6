@@ -1,4 +1,5 @@
 #include <iostream>
+#include "database.h"
 #include "metaTeamComps.h"
 
 pair<string*, string*> findTeamComp(string map, int team, string* usernames) { //<usernames, operators>
@@ -9,7 +10,14 @@ pair<string*, string*> findTeamComp(string map, int team, string* usernames) { /
 }
 
 int main() {
+	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
+	vector<player> examplePlayers;
+
+	for (int i = 0; i < exampleNames.size(); i++) {
+		examplePlayers.push_back(player(exampleNames[i], .5, 2));
+	}
+
+	database db = database(examplePlayers, 5000);
+
 	return 0;
 }
-
-//CAOSINDOSAKDNFLSKDNFLKSDNFLKDSNflAqaa
