@@ -37,7 +37,7 @@ HashMap::HashMap() {
 			this->hashMapBuckets.push_back(pusher);
 }
 
-vector<vector<player>>& HashMap::getHMap() {
+vector<vector<player>>& HashMap::getHMap() {//
 	return this->hashMapBuckets;
 }
 vector<vector<player>> HashMap::insertPlayer(player insert, vector<vector<player>> hash) {
