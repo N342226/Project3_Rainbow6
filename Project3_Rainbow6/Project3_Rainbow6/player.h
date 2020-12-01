@@ -1,5 +1,6 @@
 #pragma once
 #include "operators.h"
+#include "maps.h"
 #include <unordered_map>
 #include <string>
 using namespace std;
@@ -26,7 +27,7 @@ player::player(string name, float minWinRate, float maxWinRate) {
 	for (int i = 0; i < operatorsSize; i++) { //operators comes from operators.h
 		for (int j = 0; j < numOfMaps; j++) {
 			float winRate = minWinRate + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxWinRate - minWinRate)));
-			operatorWinRate[operators[i]].push_back(winRate);
+			operatorWinRate[operators[i]].emplace(maps[j],winRate);
 		}
 		
 	}
@@ -43,7 +44,7 @@ string player::getName() {
 
 float player::getOperatorWinRate(string operatorName, int map) {
 	if (map < numOfMaps) {
-		return operatorWinRate[operatorName][map];
+		return operatorWinRate[operatorName].at(maps[map]);
 	}
 	else {
 		return 0;
@@ -53,8 +54,9 @@ float player::getOperatorWinRate(string operatorName, int map) {
 float player::getOperatorWinRate(string operatorName) {
 	float result = 0;
 	int i = 0;
+
 	for (i; i < operatorWinRate[operatorName].size(); i++) {
-		result += operatorWinRate[operatorName][i];
+		result += operatorWinRate[operatorName][maps[i]];
 	}
 	return result / (i + 1);
 }
