@@ -1,4 +1,5 @@
 #pragma once
+#include "maps.h"
 #include <algorithm>
 #include <string>
 #include <unordered_map>
@@ -27,19 +28,23 @@ metaTeamComps::metaTeamComps() {
 }
 
 metaTeamComps::metaTeamComps(vector<player> db) {
-	vector<vector<float>> defenseWinRates; //<maps<operators>>
-	vector<vector<float>> attackWinRates;
+	vector<vector<float>> defenseWinRates(mapSize, vector<float>(defenseOperatorSize)); //<maps<operators>>
+	vector<vector<float>> attackWinRates(mapSize, vector<float>(attackOperatorSize));
 
-	for (int i = 0; i < db.size(); i++) {
-		for (int m = 0; m < db[i].getNumberOfMaps(); m++) {
+	cout << "Deciding best team compisitions..." << endl;
+
+	for (int i = 0; i < db.size(); i++) { //iterate through each player
+		for (int m = 0; m < mapSize; m++) { //iterate through each map
+
 			for (int d = 0; d < defenseOperatorSize; d++) {
-				defenseWinRates[m][d] += db[i].getOperatorWinRate(defenseOperators[d], m);
+				defenseWinRates[m][d] += db[i].getOperatorWinRate(defenseOperators[d], m); //get each defence operator on each map of this player
 				if (i != 0) {
 					defenseWinRates[m][d] /= 2; //skip the first iteration and average results afterwards 
 				}
 			}
+
 			for (int a = 0; a < attackOperatorSize; a++) {
-				attackWinRates[m][a] += db[i].getOperatorWinRate(attackOperators[a], m);
+				attackWinRates[m][a] += db[i].getOperatorWinRate(attackOperators[a], m); //get each attack operator on each map of this player
 				if (i != 0) {
 					attackWinRates[m][a] /= 2;
 				}
@@ -65,7 +70,9 @@ metaTeamComps::metaTeamComps(vector<player> db) {
 		}
 	}
 
-
+	for (int i = 0; i < mapSize; i++) {
+		metaTeams[maps[i]] = { max_D, max_A };
+	}
 }
 
 metaTeamComps::metaTeamComps(vector<string> maps, vector<string*> defenseOperators, vector<string*> attackOperators) {

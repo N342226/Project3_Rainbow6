@@ -6,13 +6,13 @@ using namespace std;
 
 class player {
 private:
-	unordered_map<string, unordered_map<string,float>> operatorWinRate;
+	unordered_map<string, vector<float>> operatorWinRate;
 	string name;
 	int numOfMaps = 20;
 public:
 	player();
 	player(string name, float minWinRate = 0, float maxWinRate = 100);
-	player(string name, unordered_map<string, unordered_map<string,float>> operatorWinRate); //<operator <win rate on each map>> || map is not needed since operators array is finite but makes look ups easier to code
+	player(string name, unordered_map<string, vector<float>> operatorWinRate); //<operator <win rate on each map>> || map is not needed since operators array is finite but makes look ups easier to code
 	string getName();
 	float getOperatorWinRate(string operatorName, int map);
 	float getOperatorWinRate(string operatorName); //return the average of each map
@@ -33,7 +33,7 @@ player::player(string name, float minWinRate, float maxWinRate) {
 	}
 }
 
-player::player(string name, unordered_map<string, unordered_map<string,float>> operatorWinRate) {
+player::player(string name, unordered_map<string, vector<float>> operatorWinRate) {
 	this->name = name;
 	this->operatorWinRate = operatorWinRate;
 }
