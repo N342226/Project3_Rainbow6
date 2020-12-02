@@ -1,13 +1,31 @@
 #include <iostream>
+#include <queue>
 #include "database.h"
 #include "metaTeamComps.h"
 #include "HashMap.h"
+/*
+DATA STRUCTURES USED:
+1. unordered_map
+2. priority_queue
+3. unorder_set
+4. bubbleSort
+*/
 
-pair<string*, string*> findTeamComp(string map, int team, string* usernames) { //<usernames, operators>
-	metaTeamComps metaTeams = metaTeamComps();
-	string* operators = metaTeams.idealOperators(map, team);
-
-	return { usernames, operators };
+void bubbleSort(vector<pair<int, priority_queue<pair<float, string>>>>& data) {
+	for (int i = 0; i < data.size() - 1; i++) {
+		int swapped = 0;
+		for (int j = 0; j < data.size() - i - 1; j++) {
+			if (data[j].second.top() < data[j + 1].second.top()) {
+				auto temp = data[j];
+				data[j] = data[j + 1];
+				data[j + 1] = temp;
+				swapped = 1;
+			}
+		}
+		if (swapped == 0) {
+			break;
+		}
+	}
 }
 
 int main() {
@@ -26,49 +44,118 @@ int main() {
 	vector<player> dbResult = db.getDatabase();
 	metaTeamComps metaTeams = metaTeamComps(dbResult);
 
-	HashMap table = HashMap();
+	/*HashMap table = HashMap();
 	for (int i = 0; i < dbResult.size(); i++) {
 		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
+	}*/
+
+	cout << "Hashing default map..." << endl;
+	unordered_map<string, player> autoMap;
+	for (int i = 0; i < dbResult.size(); i++) {
+		autoMap[dbResult[i].getName()] = dbResult[i];
 	}
 
 	//Getting and outputting Player Info
-	string p1, p2, p3, p4, p5, map;
+	string playerNames[5];
+	string map;
+	int team;
 	cout << endl;
 	cout << "Enter Map: ";
 	//cin >> map;
 	cout << "Bank" << endl;
 	map = "Bank";
 
-	cout << "Enter Player 1's name: ";
-	//cin >> p1;
-	cout << "Charles" << endl;
-	p1 = "charles";
-	cout << "Enter Player 2's name: ";
-	//cin >> p2;
-	cout << "Robbie" << endl;
-	p2 = "Robbie";
-	cout << "Enter Player 3's name: ";
-	//cin >> p3;
-	cout << "Football" << endl;
-	p3 = "Football";
-	cout << "Enter Player 4's name: ";
-	//cin >> p4;
-	cout << "Susurrus" << endl;
-	p4 = "Susurrus";
-	cout << "Enter Player 5's name: ";
-	//cin >> p5;
-	cout << "Bob" << endl;
-	p5 = "Bob";
+	cout << "Enter Team (0 = Defense, 1 = Attack): ";
+	//cin >> team;
+	cout << "0" << endl;
+	team = 0;
+
+	cout << endl << "Meta Team Composition:" << endl;
+	vector<string> idealTeam = metaTeams.idealOperators(map, team);
+	for (int i = 0; i < 5; i++) {
+		cout << idealTeam[i] << endl;
+	}
 	cout << endl;
 
+	/*cout << "Enter Player 1's name: ";
+	cout << "Charles" << endl;
+	playerNames[0] = "Charles";
+	cout << "Enter Player 2's name: ";
+	cout << "Robbie" << endl;
+	playerNames[1] = "Robbie";
+	cout << "Enter Player 3's name: ";
+	cout << "Football" << endl;
+	playerNames[2] = "Football";
+	cout << "Enter Player 4's name: ";
+	cout << "Susurrus" << endl;
+	playerNames[3] = "Susurrus";
+	cout << "Enter Player 5's name: ";
+	cout << "Bob" << endl;
+	playerNames[4] = "Bob";
+	cout << endl;*/
+
+	for (int i = 0; i < 5; i++) {
+		cout << "Enter Player " << i + 1 << "'s name: ";
+		cin >> playerNames[i];
+	}
+
 	//Get player info
-	player pl1, pl2, pl3, pl4, pl5;
+	/*player pl1, pl2, pl3, pl4, pl5;
 	pl1 = table.retrievePlayerInfo(p1);
 	pl2 = table.retrievePlayerInfo(p2);
 	pl3 = table.retrievePlayerInfo(p3);
 	pl4 = table.retrievePlayerInfo(p4);
-	pl5 = table.retrievePlayerInfo(p5);
+	pl5 = table.retrievePlayerInfo(p5);*/
 
+	vector<pair<int, priority_queue<pair<float, string>>>> winRates(5); //I hate myself
+	for (int i = 0; i < 5; i++) { //players
+		for (int j = 0; j < 5; j++) { //meta operators
+			winRates[i].first = i;
+			winRates[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map), idealTeam[j] });
+			//cout << idealTeam[j] << ": ";
+			//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+		}
+		//cout << endl;
+	}
+
+	/*cout << "-----------" << endl << endl;
+
+	while(!winRates[0].second.empty()){
+		cout << winRates[0].second.top().second << ": " << winRates[0].second.top().first << endl;
+		winRates[0].second.pop();
+	}
+	cout << endl;*/
+
+	bubbleSort(winRates);
+	for (int i = 0; i < 4; i++) { //alot of loops are happening here and it's not very efficient but it only runs a finite number of times since winRates always has a size of 5 so it's O(1)
+
+		/*for (int j = 0; j < 5; j++) {
+			cout << playerNames[winRates[j].first] << " | " << winRates[j].second.top().second << ": " << winRates[j].second.top().first << endl;
+		}
+		cout << endl;*/
+
+		int k = i + 1;
+		bool changed = false;
+		while (k < 5) {
+			if (winRates[i].second.top().second == winRates[k].second.top().second) {
+				winRates[k].second.pop();
+				bubbleSort(winRates);
+				k = i + 1;
+				changed = true;
+			}
+			k++;
+		}
+
+		if (changed) {
+			i = -1; //changes to 0 at end of iteration
+		}
+	}
+
+	cout << "------------" << endl << endl;
+
+	for (int i = 0; i < 5; i++) {
+		cout << playerNames[winRates[i].first] << ": " << winRates[i].second.top().second << endl;
+	}
 
 	return 0;
 }
