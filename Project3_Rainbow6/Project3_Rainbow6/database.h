@@ -34,6 +34,7 @@ string database::randomString(int n)
 }
 
 void database::fillDb(int size) {
+    cout << "Generating random database..." << endl;
     while (db.size() <= size) {
         string name = randomString(rand() % 10 + 5); //random string between 5 and 15 characters
         if (usedNames.find(name) == usedNames.end()) {

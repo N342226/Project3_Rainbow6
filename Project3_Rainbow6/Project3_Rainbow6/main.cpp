@@ -15,38 +15,51 @@ int main() {
 	vector<player> examplePlayers;
 
 	for (int i = 0; i < exampleNames.size(); i++) {
-		examplePlayers.push_back(player(exampleNames[i], .5, 2));
+		examplePlayers.push_back(player(exampleNames[i]));
 	}
 
-	database db = database(examplePlayers, 10);
-	
+	int dbSize;
+	cout << "Enter size of database: ";
+	cin >> dbSize;
+
+	database db = database(examplePlayers, dbSize);
 	vector<player> dbResult = db.getDatabase();
 	metaTeamComps metaTeams = metaTeamComps(dbResult);
-
-	for (int i = 0; i < dbResult.size(); i++) {
-		cout << dbResult[i].getName() << "\nZero win rate: " << dbResult[i].getOperatorWinRate("Zero") << endl << endl;;
-	}
 
 	HashMap table = HashMap();
 	for (int i = 0; i < dbResult.size(); i++) {
 		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
-		cout << i << endl;
 	}
 
 	//Getting and outputting Player Info
 	string p1, p2, p3, p4, p5, map;
-	cout << "Enter Map: " << endl;
-	cin >> map;
-	cout << "Enter Player 1's name: " << endl;
-	cin >> p1;
-	cout << "Enter Player 2's name: " << endl;
-	cin >> p2;
-	cout << "Enter Player 3's name: " << endl;
-	cin >> p3;
-	cout << "Enter Player 4's name: " << endl;
-	cin >> p4;
-	cout << "Enter Player 5's name: " << endl;
-	cin >> p5;
+	cout << endl;
+	cout << "Enter Map: ";
+	//cin >> map;
+	cout << "Bank" << endl;
+	map = "Bank";
+
+	cout << "Enter Player 1's name: ";
+	//cin >> p1;
+	cout << "Charles" << endl;
+	p1 = "charles";
+	cout << "Enter Player 2's name: ";
+	//cin >> p2;
+	cout << "Robbie" << endl;
+	p2 = "Robbie";
+	cout << "Enter Player 3's name: ";
+	//cin >> p3;
+	cout << "Football" << endl;
+	p3 = "Football";
+	cout << "Enter Player 4's name: ";
+	//cin >> p4;
+	cout << "Susurrus" << endl;
+	p4 = "Susurrus";
+	cout << "Enter Player 5's name: ";
+	//cin >> p5;
+	cout << "Bob" << endl;
+	p5 = "Bob";
+	cout << endl;
 
 	//Get player info
 	player pl1, pl2, pl3, pl4, pl5;

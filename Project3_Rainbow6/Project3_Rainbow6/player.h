@@ -7,13 +7,13 @@ using namespace std;
 
 class player {
 private:
-	unordered_map<string, vector<float>> operatorWinRate;
+	unordered_map<string, unordered_map<string, float>> operatorWinRate;
 	string name;
 	int numOfMaps = 20;
 public:
 	player();
-	player(string name, float minWinRate = 0, float maxWinRate = 100);
-	player(string name, unordered_map<string, vector<float>> operatorWinRate); //<operator <win rate on each map>> || map is not needed since operators array is finite but makes look ups easier to code
+	player(string name, float minWinRate = 0, float maxWinRate = 100); //0-100 is ideal for win rate. But we considered basing skill off k/d earlier and by changing this to .5-2.0 it imitates k/d
+	player(string name, unordered_map<string, unordered_map<string, float>> operatorWinRate); //<operator <map, win rate>> || map is not needed since operators and maps array is finite but makes look ups easier to code
 	string getName();
 	float getOperatorWinRate(string operatorName, int map);
 	float getOperatorWinRate(string operatorName); //return the average of each map
@@ -33,7 +33,7 @@ player::player(string name, float minWinRate, float maxWinRate) {
 	}
 }
 
-player::player(string name, unordered_map<string, vector<float>> operatorWinRate) {
+player::player(string name, unordered_map<string, unordered_map<string, float>> operatorWinRate) {
 	this->name = name;
 	this->operatorWinRate = operatorWinRate;
 }
@@ -60,4 +60,3 @@ float player::getOperatorWinRate(string operatorName) {
 	}
 	return result / (i + 1);
 }
-//Comment

@@ -31,7 +31,7 @@ metaTeamComps::metaTeamComps(vector<player> db) {
 	vector<vector<float>> defenseWinRates(mapSize, vector<float>(defenseOperatorSize)); //<maps<operators>>
 	vector<vector<float>> attackWinRates(mapSize, vector<float>(attackOperatorSize));
 
-	cout << "Deciding best team compisitions..." << endl;
+	cout << "Deciding best team compositions..." << endl;
 
 	for (int i = 0; i < db.size(); i++) { //iterate through each player
 		for (int m = 0; m < mapSize; m++) { //iterate through each map
