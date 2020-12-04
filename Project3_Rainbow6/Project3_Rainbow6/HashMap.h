@@ -29,6 +29,7 @@ public:
 };
 
 HashMap::HashMap() {
+	cout << "Generating hash table from database..." << endl; 
 	this->bucketsTaken = 0.0;
 	this->buckets = 10.0;
 	this->loadFactor = 0.75;
