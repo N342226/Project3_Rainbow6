@@ -5,20 +5,29 @@
 using namespace std;
 class Node {
 private:
-	priority_queue < pair<float, string>> size; //<win rate, name>
+	priority_queue < pair<float, string>> size; //<win rate, player name>
 	string operatorName;
 public:
-	Node(priority_queue < pair<float, string>> size);
+	Node();
+	Node(priority_queue < pair<float, string>>& size, string operatorName);
 	pair<float, string> getSize();
 	string getOperatorName();
 	void resizeNode();
 };
 
-Node::Node(priority_queue < pair<float, string>> size) {
+Node::Node() {
+	operatorName = "";
+}
+
+Node::Node(priority_queue < pair<float, string>>& size, string operatorName) {
+	this->operatorName = operatorName;
 	this->size = size;
 }
 
 pair<float, string> Node::getSize() {
+	if (size.empty()) {
+		return {};
+	}
 	return size.top();
 }
 
@@ -27,5 +36,11 @@ string Node::getOperatorName() {
 }
 
 void Node::resizeNode() {
-	size.pop();
+	if (!size.empty()) {
+		size.pop();
+	}
 }
+
+/*bool operator<(const struct Node& left, const struct Node& right) {
+	return false;//left.getSize().first < right.getSize().first;
+}*/

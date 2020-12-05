@@ -1,9 +1,10 @@
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <queue>
 #include "database.h"
 #include "metaTeamComps.h"
 #include "HashMap.h"
+#include "Graph.h"
 /*
 DATA STRUCTURES USED:
 1. unordered_map
@@ -57,7 +58,7 @@ void calulateIdealTeam(vector<pair<int, priority_queue<pair<float, string>>>>& w
 }
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	/*sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
@@ -73,7 +74,7 @@ int main() {
 		window.clear();
 		window.draw(shape);
 		window.display();
-	}
+	}*/
 	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
 	vector<player> examplePlayers;
 
@@ -83,7 +84,9 @@ int main() {
 
 	int dbSize;
 	cout << "Enter size of database: ";
-	cin >> dbSize;
+	//cin >> dbSize;
+	cout << 10 << endl;
+	dbSize = 10;
 
 	database db = database(examplePlayers, dbSize);
 	vector<player> dbResult = db.getDatabase();
@@ -198,6 +201,14 @@ int main() {
 	for (int i = 0; i < 5; i++) {
 		cout << playerNames[winRatesMeta[i].first] << ": " << winRatesMeta[i].second.top().second << endl;
 	}
+
+	vector<player> players(5);
+	for (int i = 0; i < 5; i++) {
+		players[i] = autoMap[playerNames[i]];
+	}
+
+	Graph testGraph = Graph(players, team);
+	testGraph.primsDeviation();
 
 	return 0;
 }
