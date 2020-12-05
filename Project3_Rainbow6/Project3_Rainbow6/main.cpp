@@ -28,6 +28,33 @@ void bubbleSort(vector<pair<int, priority_queue<pair<float, string>>>>& data) {
 	}
 }
 
+void calulateIdealTeam(vector<pair<int, priority_queue<pair<float, string>>>>& winRates) {
+	bubbleSort(winRates);
+	for (int i = 0; i < 4; i++) { //alot of loops are happening here and it's not very efficient but it only runs a finite number of times since winRates always has a size of 5 so it's O(1)
+
+		/*for (int j = 0; j < 5; j++) {
+			cout << playerNames[winRates[j].first] << " | " << winRates[j].second.top().second << ": " << winRates[j].second.top().first << endl;
+		}
+		cout << endl;*/
+
+		int k = i + 1;
+		bool changed = false;
+		while (k < 5) {
+			if (winRates[i].second.top().second == winRates[k].second.top().second) {
+				winRates[k].second.pop();
+				bubbleSort(winRates);
+				k = i + 1;
+				changed = true;
+			}
+			k++;
+		}
+
+		if (changed) {
+			i = -1; //changes to 0 at end of iteration
+		}
+	}
+}
+
 int main() {
 	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
 	vector<player> examplePlayers;
@@ -77,7 +104,7 @@ int main() {
 	}
 	cout << endl;
 
-	/*cout << "Enter Player 1's name: ";
+	cout << "Enter Player 1's name: ";
 	cout << "Charles" << endl;
 	playerNames[0] = "Charles";
 	cout << "Enter Player 2's name: ";
@@ -92,12 +119,12 @@ int main() {
 	cout << "Enter Player 5's name: ";
 	cout << "Bob" << endl;
 	playerNames[4] = "Bob";
-	cout << endl;*/
+	cout << endl;
 
-	for (int i = 0; i < 5; i++) {
+	/*for (int i = 0; i < 5; i++) {
 		cout << "Enter Player " << i + 1 << "'s name: ";
 		cin >> playerNames[i];
-	}
+	}*/
 
 	//Get player info
 	/*player pl1, pl2, pl3, pl4, pl5;
@@ -107,11 +134,22 @@ int main() {
 	pl4 = table.retrievePlayerInfo(p4);
 	pl5 = table.retrievePlayerInfo(p5);*/
 
-	vector<pair<int, priority_queue<pair<float, string>>>> winRates(5); //I hate myself
+	vector<pair<int, priority_queue<pair<float, string>>>> winRatesMeta(5); //I hate myself
 	for (int i = 0; i < 5; i++) { //players
 		for (int j = 0; j < 5; j++) { //meta operators
-			winRates[i].first = i;
-			winRates[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map), idealTeam[j] });
+			winRatesMeta[i].first = i;
+			winRatesMeta[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j]), idealTeam[j] });
+			//cout << idealTeam[j] << ": ";
+			//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+		}
+		//cout << endl;
+	}
+
+	vector<pair<int, priority_queue<pair<float, string>>>> winRatesAll(5);
+	for (int i = 0; i < 5; i++) { //players
+		for (int j = 0; j < operatorsSize; j++) { //all operators
+			winRatesAll[i].first = i;
+			winRatesAll[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(operators[j]), operators[j] });
 			//cout << idealTeam[j] << ": ";
 			//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
 		}
@@ -126,35 +164,21 @@ int main() {
 	}
 	cout << endl;*/
 
-	bubbleSort(winRates);
-	for (int i = 0; i < 4; i++) { //alot of loops are happening here and it's not very efficient but it only runs a finite number of times since winRates always has a size of 5 so it's O(1)
-
-		/*for (int j = 0; j < 5; j++) {
-			cout << playerNames[winRates[j].first] << " | " << winRates[j].second.top().second << ": " << winRates[j].second.top().first << endl;
-		}
-		cout << endl;*/
-
-		int k = i + 1;
-		bool changed = false;
-		while (k < 5) {
-			if (winRates[i].second.top().second == winRates[k].second.top().second) {
-				winRates[k].second.pop();
-				bubbleSort(winRates);
-				k = i + 1;
-				changed = true;
-			}
-			k++;
-		}
-
-		if (changed) {
-			i = -1; //changes to 0 at end of iteration
-		}
-	}
+	calulateIdealTeam(winRatesMeta);
+	calulateIdealTeam(winRatesAll);
 
 	cout << "------------" << endl << endl;
 
+	cout << "Based On Player Win Rates: " << endl;
+
 	for (int i = 0; i < 5; i++) {
-		cout << playerNames[winRates[i].first] << ": " << winRates[i].second.top().second << endl;
+		cout << playerNames[winRatesAll[i].first] << ": " << winRatesAll[i].second.top().second << endl;
+	}
+
+	cout << endl <<"Based On Meta Compositions: " << endl;
+
+	for (int i = 0; i < 5; i++) {
+		cout << playerNames[winRatesMeta[i].first] << ": " << winRatesMeta[i].second.top().second << endl;
 	}
 
 	return 0;
