@@ -18,7 +18,7 @@ public:
 	string getName();
 	float getOperatorWinRate(string operatorName, int map);
 	float getOperatorWinRate(string operatorName, string map);
-	float getOperatorWinRate(string operatorName); //return the average of each map
+	float getOperatorWinRate(string operatorName); //return the average of each map 
 };
 
 player::player() {

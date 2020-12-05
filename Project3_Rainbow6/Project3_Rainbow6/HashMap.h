@@ -81,7 +81,7 @@ int HashMap::hashPlayer(player unHashed, int buckets) {
 }
 
 player HashMap::retrievePlayerInfo(string name) {
-	for (int i = 0; i < this->hashMapBuckets.size(); i++){
+	int i = hashPlayer(name, this->buckets);
 		for (int z = 0; z < this->hashMapBuckets.at(i).size(); z++){
 			string check = hashMapBuckets.at(i).at(z).getName();
 			if (check == name)
@@ -89,7 +89,7 @@ player HashMap::retrievePlayerInfo(string name) {
 				return hashMapBuckets.at(i).at(z);
 			}
 		}
-	}
+
 	cout << "Player " << name << " was not found" << endl;
 	player empty;
 	return empty;
