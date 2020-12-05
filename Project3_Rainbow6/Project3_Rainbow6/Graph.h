@@ -60,26 +60,6 @@ Graph::Graph(vector<player> players, int team) {
     else { //Attack
 
     }
-    priority_queue<pair<float, string>> ZeroWinRates = createPyramid("Zero");
-    priority_queue<pair<float, string>> AceWinRates = createPyramid("Ace");
-    priority_queue<pair<float, string>> IanaWinRates = createPyramid("Iana");
-    priority_queue<pair<float, string>> KaliWinRates = createPyramid("Kali");
-    priority_queue<pair<float, string>> AmaruWinRates = createPyramid("Amaru");
-    priority_queue<pair<float, string>> NokkWinRates = createPyramid("Nokk");
-
-    Node* Zero = new Node(ZeroWinRates, "Zero");
-    Node* Ace = new Node(AceWinRates, "Ace");
-    Node* Iana = new Node(IanaWinRates, "Iana");
-    Node* Kali = new Node(KaliWinRates, "Kali");
-    Node* Amaru = new Node(AmaruWinRates, "Amaru");
-    Node* Nokko = new Node(NokkWinRates, "Nokk");
-
-    insertEdge(Zero, Ace, 1);
-    insertEdge(Zero, Iana, 8);
-    insertEdge(Zero, Kali, 9);
-    insertEdge(Zero, Amaru, 10);
-
-    insertEdge(Iana, Nokko, 4);
 }
 
 void Graph::insertEdge(Node* from, Node* to, int weight) {
