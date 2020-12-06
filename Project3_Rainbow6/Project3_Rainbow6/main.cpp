@@ -5,6 +5,7 @@
 #include "metaTeamComps.h"
 #include "HashMap.h"
 #include "Graph.h"
+#include "Graph2.h"
 /*
 DATA STRUCTURES USED:
 1. unordered_map
@@ -62,7 +63,7 @@ void calulateIdealTeam(vector<pair<int, priority_queue<pair<float, string>>>>& w
 }
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	/*sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
@@ -78,7 +79,7 @@ int main() {
 		window.clear();
 		window.draw(shape);
 		window.display();
-	}
+	}*/
 	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
 	vector<player> examplePlayers;
 
@@ -194,7 +195,7 @@ int main() {
 
 	cout << "------------" << endl << endl;
 
-	cout << "Based On Player Win Rates: " << endl;
+	cout << "Based On Player Win Rates: " << endl; //choses from all operators instead of operators from team (offense / attack)
 
 	for (int i = 0; i < 5; i++) {
 		cout << playerNames[winRatesAll[i].first] << ": " << winRatesAll[i].second.top().second << endl;
@@ -212,7 +213,20 @@ int main() {
 	}
 
 	Graph testGraph = Graph(players, team);
-	testGraph.primsDeviation();
+	unordered_set<Node*> kruskal = testGraph.kruskalDeviation();
+
+	for (auto it : kruskal) {
+		cout << it->getSize().second << ": " << it->getOperatorName() << endl;
+	}
+	cout << endl << "-----------" << endl;
+
+	Graph2 testGraph2 = Graph2(players, team);
+
+	vector<Node*> bruteForce = testGraph2.bruteForce();
+	cout << endl << "-----------" << endl << endl;
+	for (int i = 0; i < bruteForce.size(); i++) {
+		cout << bruteForce[i]->getSize().second << ": " << bruteForce[i]->getOperatorName() << endl;
+	}
 
 	return 0;
 }

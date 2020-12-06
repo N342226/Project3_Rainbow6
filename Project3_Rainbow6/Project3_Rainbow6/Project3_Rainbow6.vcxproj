@@ -157,12 +157,14 @@
     <ClInclude Include="database.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="Graph2.h" />
     <ClInclude Include="HashMap.h" />
     <ClInclude Include="maps.h" />
     <ClInclude Include="metaTeamComps.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="WeightedEdges.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

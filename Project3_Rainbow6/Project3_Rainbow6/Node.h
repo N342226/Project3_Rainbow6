@@ -13,6 +13,7 @@ public:
 	pair<float, string> getSize();
 	string getOperatorName();
 	void resizeNode();
+	int getSizeLength();
 };
 
 Node::Node() {
@@ -29,6 +30,10 @@ pair<float, string> Node::getSize() {
 		return {};
 	}
 	return size.top();
+}
+
+int Node::getSizeLength() {
+	return size.size();
 }
 
 string Node::getOperatorName() {
