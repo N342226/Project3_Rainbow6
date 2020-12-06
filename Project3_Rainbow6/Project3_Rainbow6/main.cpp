@@ -1,4 +1,4 @@
-//#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <queue>
 #include "database.h"
@@ -10,7 +10,11 @@ DATA STRUCTURES USED:
 1. unordered_map
 2. priority_queue
 3. unorder_set
-4. bubbleSort
+5. edge list graph
+
+ALGORITHMS USED:
+1. Bubble sort
+2. Prim's
 */
 
 void bubbleSort(vector<pair<int, priority_queue<pair<float, string>>>>& data) {
@@ -58,7 +62,7 @@ void calulateIdealTeam(vector<pair<int, priority_queue<pair<float, string>>>>& w
 }
 
 int main() {
-	/*sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
@@ -74,7 +78,7 @@ int main() {
 		window.clear();
 		window.draw(shape);
 		window.display();
-	}*/
+	}
 	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
 	vector<player> examplePlayers;
 
