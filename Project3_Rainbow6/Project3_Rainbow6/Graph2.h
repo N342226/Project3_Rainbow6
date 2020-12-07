@@ -13,12 +13,12 @@ private:
 	vector<player> players;
 	int team;
 
-	map < Node*, vector < tuple<Node*, int, float>>> adjList;
+	map < Node*, vector < tuple<Node*, float, float>>> adjList;
 
 	vector<string> namesAlreadyChecked;
 	void checkDuplicateNameEdges(Node* from, Node* to, vector<Node*> traversal);
 
-	void balance(map < Node*, vector < tuple<Node*, int, float>>> adjList, vector<Node*> traversal, Node* from);
+	void balance(map < Node*, vector < tuple<Node*, float, float>>> adjList, vector<Node*> traversal, Node* from);
 public:
 	Graph2(vector<player> players, int team) {
 		this->players = players;
@@ -34,14 +34,14 @@ public:
 		}
 	}
 
-	vector<tuple<Node*, int, float>> bfs(map < Node*, vector < tuple<Node*, int, float>>> _adjList, string src);
+	vector<tuple<Node*, float, float>> bfs(map < Node*, vector < tuple<Node*, float, float>>> _adjList, string src);
 	vector<Node*> bruteForce(float& score);
 };
 
-vector<tuple<Node*, int, float>> Graph2::bfs(map < Node*, vector < tuple<Node*, int, float>>> adjList, string _src) {
+vector<tuple<Node*, float, float>> Graph2::bfs(map < Node*, vector < tuple<Node*, float, float>>> adjList, string _src) {
 	unordered_map<Node*, bool> visited;
-	queue<tuple<Node*, int, float>> q;
-	vector< tuple<Node*, int, float>> result;
+	queue<tuple<Node*, float, float>> q;
+	vector< tuple<Node*, float, float>> result;
 	vector<Node*> traversal;
 	Node* src;
 
@@ -57,7 +57,7 @@ vector<tuple<Node*, int, float>> Graph2::bfs(map < Node*, vector < tuple<Node*, 
 
 	while (!q.empty() && i < 5) {
 		i++;
-		tuple<Node*, int, int> u = q.front();
+		tuple<Node*, float, float> u = q.front();
 		result.push_back(u);
 		traversal.push_back(get<0>(u));
 		cout << "Node " << i << ": " << get<0>(u)->getOperatorName() << " | " << get<0>(u)->getSize().second << endl;
@@ -69,7 +69,7 @@ vector<tuple<Node*, int, float>> Graph2::bfs(map < Node*, vector < tuple<Node*, 
 		balance(adjList, traversal, get<0>(u));
 		q.pop();
 
-		for (tuple<Node*, int, int> v : adjList[get<0>(u)]) { //I think changing adjList to a map from unordered map will sort the edges so the largest ones are picked first
+		for (tuple<Node*, float, float> v : adjList[get<0>(u)]) { //I think changing adjList to a map from unordered map will sort the edges so the largest ones are picked first
 			if (!visited[get<0>(v)]) {
 				visited[get<0>(v)] = true;
 				q.push(v);
@@ -80,7 +80,7 @@ vector<tuple<Node*, int, float>> Graph2::bfs(map < Node*, vector < tuple<Node*, 
 	return result;
 }
 
-void Graph2::balance(map < Node*, vector < tuple<Node*, int, float>>> adjList, vector<Node*> traversal, Node* from) {
+void Graph2::balance(map < Node*, vector < tuple<Node*, float, float>>> adjList, vector<Node*> traversal, Node* from) {
 	for (int k = 0; k < adjList[from].size(); k++) {
 		Node* to = get<0>(adjList[from][k]);
 
@@ -122,13 +122,13 @@ void Graph2::balance(map < Node*, vector < tuple<Node*, int, float>>> adjList, v
 }
 
 vector<Node*> Graph2::bruteForce(float& score) {
-	vector<tuple<Node*, int, float>> bestTraversal;
+	vector<tuple<Node*, float, float>> bestTraversal;
 	float bestRating = 0;
 
 	int j = 0;
 	for (auto x : this->adjList) {
 		cout << endl << "---TRAVERSAL " << j++ << "---" << endl;
-		map < Node*, vector < tuple<Node*, int, float>>> adjList;
+		map < Node*, vector < tuple<Node*, float, float>>> adjList;
 		WeightedEdges _edges = WeightedEdges(players, team);
 		vector<Edge*> edges = _edges.edges;;
 
@@ -137,12 +137,12 @@ vector<Node*> Graph2::bruteForce(float& score) {
 			adjList[edges[i]->getTo()].push_back({ edges[i]->getFrom(), edges[i]->getWeight(), edges[i]->calculateRating() });
 		}
 
-		vector<tuple<Node*, int, float>> traversal = bfs(adjList, x.first->getOperatorName());
+		vector<tuple<Node*, float, float>> traversal = bfs(adjList, x.first->getOperatorName());
 		namesAlreadyChecked.clear();
 
 		float totalRating = 0;
 		for (int i = 0; i < traversal.size(); i++) {
-			cout << get<2>(traversal[i]) << endl; //why is this an int?
+			cout << get<2>(traversal[i]) << endl;
 			totalRating += get<2>(traversal[i]);
 		}
 		cout << "Total: " << totalRating << endl;

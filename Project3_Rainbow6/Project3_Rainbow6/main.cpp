@@ -237,7 +237,7 @@ int main() {
 	for (auto it : kruskal) {
 		cout << it->getSize().second << ": " << it->getOperatorName() << endl;
 	}
-	cout << "Team Score: " << (scoreKruskal + numSynergies*5) / 4 << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily
+	cout << "Team Score: " << (scoreKruskal + numSynergies*5) / numSynergies << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily
 	
 	cout << endl << "-----------" << endl;
 

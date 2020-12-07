@@ -24,7 +24,7 @@ private:
 public:
     Graph(vector<player> players, int team);
     void insertEdge(Node* from, Node* to, int weight);
-    int getWeight(Node from, Node to);
+    float getWeight(Node from, Node to);
     vector<Edge> getEdges();
 
     unordered_set<Node*> kruskalDeviation(int& numSynergies, float& score);
@@ -151,7 +151,7 @@ unordered_set<Node*> Graph::kruskalDeviation(int& numSynergies, float& score) {
         }
     }
 
-    if (numSynergies == 3) { //disconnected edges
+    /*if (numSynergies == 3) { //disconnected edges
         cout << "only 3 synergies" << endl;
         //find disconnected nodes
         unordered_map<Node*, int> checkedNodes;
@@ -188,7 +188,7 @@ unordered_set<Node*> Graph::kruskalDeviation(int& numSynergies, float& score) {
         }
 
         //add their edge value again
-    }
+    }*/
 
     return K;
     /*for(auto it : K){
