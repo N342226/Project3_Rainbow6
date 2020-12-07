@@ -1,5 +1,5 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
+//#include <SFML/Graphics.hpp>
+#include <iostream>fsdfs
 #include <queue>
 #include "database.h"
 #include "metaTeamComps.h"
@@ -173,12 +173,23 @@ int main() {
 
 	vector<pair<int, priority_queue<pair<float, string>>>> winRatesAll(5);
 	for (int i = 0; i < 5; i++) { //players
-		for (int j = 0; j < operatorsSize; j++) { //all operators
-			winRatesAll[i].first = i;
-			winRatesAll[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(operators[j]), operators[j] });
-			//cout << idealTeam[j] << ": ";
-			//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+		if (team == 0) { //all defense operators
+			for (int j = 0; j < defenseOperatorSize; j++) { //all operators
+				winRatesAll[i].first = i;
+				winRatesAll[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(defenseOperators[j]), defenseOperators[j] });
+				//cout << idealTeam[j] << ": ";
+				//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+			}
 		}
+		else if (team == 1) { //all attack operators
+			for (int j = 0; j < attackOperatorSize; j++) { //all operators
+				winRatesAll[i].first = i;
+				winRatesAll[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(attackOperators[j]), attackOperators[j] });
+				//cout << idealTeam[j] << ": ";
+				//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+			}
+		}
+		
 		//cout << endl;
 	}
 
@@ -197,15 +208,21 @@ int main() {
 
 	cout << "Based On Player Win Rates: " << endl; //choses from all operators instead of operators from team (offense / attack)
 
+	float scoreBasic = 0;
 	for (int i = 0; i < 5; i++) {
 		cout << playerNames[winRatesAll[i].first] << ": " << winRatesAll[i].second.top().second << endl;
+		scoreBasic += winRatesAll[i].second.top().first;
 	}
+	cout << "Team Score: " << scoreBasic / 5 << endl; //doesnt check for meta characters or synergies (could be higher)
 
 	cout << endl <<"Based On Meta Compositions: " << endl;
 
+	float scoreMeta = 0;
 	for (int i = 0; i < 5; i++) {
 		cout << playerNames[winRatesMeta[i].first] << ": " << winRatesMeta[i].second.top().second << endl;
+		scoreMeta += winRatesMeta[i].second.top().first;
 	}
+	cout << "Team Score: " << (scoreMeta + 50) / 5 << endl; //doesnt check for synergies (could be higher) and 50 was chosen as an abitrary bonus for using meta comp
 
 	vector<player> players(5);
 	for (int i = 0; i < 5; i++) {
@@ -213,20 +230,26 @@ int main() {
 	}
 
 	Graph testGraph = Graph(players, team);
-	unordered_set<Node*> kruskal = testGraph.kruskalDeviation();
+	int numSynergies = 0; //can either be 3 or 4 depending on how which edges are picked
+	float scoreKruskal = 0;
+	unordered_set<Node*> kruskal = testGraph.kruskalDeviation(numSynergies, scoreKruskal);
 
 	for (auto it : kruskal) {
 		cout << it->getSize().second << ": " << it->getOperatorName() << endl;
 	}
+	cout << "Team Score: " << (scoreKruskal + numSynergies*5) / 4 << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily
+	
 	cout << endl << "-----------" << endl;
 
 	Graph2 testGraph2 = Graph2(players, team);
+	float scoreBruteForce = 0;
+	vector<Node*> bruteForce = testGraph2.bruteForce(scoreBruteForce);
 
-	vector<Node*> bruteForce = testGraph2.bruteForce();
 	cout << endl << "-----------" << endl << endl;
 	for (int i = 0; i < bruteForce.size(); i++) {
 		cout << bruteForce[i]->getSize().second << ": " << bruteForce[i]->getOperatorName() << endl;
 	}
-
+	cout << "Team Score: " << (scoreBruteForce + 4*5) / 4 << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily (always 4 synergies)
+	
 	return 0;
 }

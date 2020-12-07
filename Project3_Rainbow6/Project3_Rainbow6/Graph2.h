@@ -35,7 +35,7 @@ public:
 	}
 
 	vector<tuple<Node*, int, float>> bfs(map < Node*, vector < tuple<Node*, int, float>>> _adjList, string src);
-	vector<Node*> bruteForce();
+	vector<Node*> bruteForce(float& score);
 };
 
 vector<tuple<Node*, int, float>> Graph2::bfs(map < Node*, vector < tuple<Node*, int, float>>> adjList, string _src) {
@@ -121,7 +121,7 @@ void Graph2::balance(map < Node*, vector < tuple<Node*, int, float>>> adjList, v
 	}
 }
 
-vector<Node*> Graph2::bruteForce() {
+vector<Node*> Graph2::bruteForce(float& score) {
 	vector<tuple<Node*, int, float>> bestTraversal;
 	float bestRating = 0;
 
@@ -142,9 +142,10 @@ vector<Node*> Graph2::bruteForce() {
 
 		float totalRating = 0;
 		for (int i = 0; i < traversal.size(); i++) {
-			//cout << get<0>(traversal[i])->getOperatorName() << endl;
+			cout << get<2>(traversal[i]) << endl; //why is this an int?
 			totalRating += get<2>(traversal[i]);
 		}
+		cout << "Total: " << totalRating << endl;
 
 		//cout << totalRating << endl << endl;
 
@@ -157,6 +158,7 @@ vector<Node*> Graph2::bruteForce() {
 
 	vector<Node*> result;
 	for (int i = 0; i < bestTraversal.size(); i++) {
+		score += get<2>(bestTraversal[i]);
 		result.push_back(get<0>(bestTraversal[i]));
 	}
 

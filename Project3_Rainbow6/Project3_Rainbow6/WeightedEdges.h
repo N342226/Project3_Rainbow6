@@ -18,33 +18,33 @@ public:
                 operators[defenseOperators[i]] = operatorNode;
             }
 
-            insertEdge(operators["Kapkan"], operators["Lesion"], 8888);
-            insertEdge(operators["Kapkan"], operators["Ela"], 8);
-            insertEdge(operators["Kapkan"], operators["Frost"], 88888);
-            insertEdge(operators["Kapkan"], operators["Jager"], 88888);
+            insertEdge(operators["Kapkan"], operators["Lesion"], .5);
+            insertEdge(operators["Kapkan"], operators["Ela"], .5);
+            insertEdge(operators["Kapkan"], operators["Frost"], .5);
+            insertEdge(operators["Kapkan"], operators["Jager"], .5);
 
-            insertEdge(operators["Jager"], operators["Tachanka"], 88888);
+            insertEdge(operators["Jager"], operators["Tachanka"], .5);
 
-            insertEdge(operators["Valk"], operators["Echo"], 8);
-            insertEdge(operators["Valk"], operators["Maestro"], 8);
+            insertEdge(operators["Valk"], operators["Echo"], .5);
+            insertEdge(operators["Valk"], operators["Maestro"], .5);
 
-            insertEdge(operators["Maestro"], operators["Mozzie"], 8);
+            insertEdge(operators["Maestro"], operators["Mozzie"], .5);
 
-            insertEdge(operators["Mozzie"], operators["Mute"], 8);
+            insertEdge(operators["Mozzie"], operators["Mute"], .5);
 
-            insertEdge(operators["Mute"], operators["Bandit"], 8);
-            insertEdge(operators["Mute"], operators["Kaid"], 8);
+            insertEdge(operators["Mute"], operators["Bandit"], .5);
+            insertEdge(operators["Mute"], operators["Kaid"], .5);
 
 
             //test
-            insertEdge(operators["Valk"], operators["Tachanka"], 8);
+            insertEdge(operators["Valk"], operators["Tachanka"], .5);
         }
         else { //Attack
 
         }
 	}
 
-    void insertEdge(Node* from, Node* to, int weight) {
+    void insertEdge(Node* from, Node* to, float weight) {
         Edge* edge = new Edge(from, to, weight);
         edges.push_back(edge);
     }

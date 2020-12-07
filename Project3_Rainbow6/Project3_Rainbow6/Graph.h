@@ -27,7 +27,7 @@ public:
     int getWeight(Node from, Node to);
     vector<Edge> getEdges();
 
-    unordered_set<Node*> kruskalDeviation();
+    unordered_set<Node*> kruskalDeviation(int& numSynergies, float& score);
     void bruteForce();
     void balance();
 };
@@ -108,9 +108,12 @@ void Graph::balance() {
     U = temp2;
 }
 
-unordered_set<Node*> Graph::kruskalDeviation() {
+unordered_set<Node*> Graph::kruskalDeviation(int& numSynergies, float& score) {
     cout << endl << "-----------" << endl;
+    unordered_map<Node*, float> calulatedWeightPerNode;
+    unordered_set<Edge*> traversedEdges;
     while (K.size() < 5) {
+        numSynergies++;
         if (K.size() == 4) {
             cout << "---Last Insertion---" << endl;
             priority_queue <pair<float, Edge*>> temp;
@@ -125,6 +128,8 @@ unordered_set<Node*> Graph::kruskalDeviation() {
             U = temp;
         }
         pair<float, Edge*> largestEdge = U.top();
+        score += largestEdge.first;
+        traversedEdges.insert(largestEdge.second);
         string fromPlayer = largestEdge.second->getFrom()->getSize().second;
         string toPlayer = largestEdge.second->getTo()->getSize().second;
         cout << endl <<fromPlayer << " -> " << toPlayer << endl;
@@ -136,10 +141,53 @@ unordered_set<Node*> Graph::kruskalDeviation() {
         K.insert(largestEdge.second->getFrom());
         K.insert(largestEdge.second->getTo());
 
+        calulatedWeightPerNode[largestEdge.second->getFrom()] = largestEdge.first;
+        calulatedWeightPerNode[largestEdge.second->getTo()] = largestEdge.first;
+
+
         U.pop();
         if (K.size() < 4) {
             balance();
         }
+    }
+
+    if (numSynergies == 3) { //disconnected edges
+        cout << "only 3 synergies" << endl;
+        //find disconnected nodes
+        unordered_map<Node*, int> checkedNodes;
+        vector<vector<Node*>> connectedNodes;
+        int group = -1;
+        for (auto it : traversedEdges) {
+            //if from or to is in vector
+            auto foundFromNode = checkedNodes.find(it->getFrom());
+            auto foundToNode = checkedNodes.find(it->getTo());
+
+            if (foundFromNode == checkedNodes.end() && foundToNode == checkedNodes.end()) {
+                connectedNodes.push_back({ it->getFrom(), it->getTo() });
+                group++;
+            }
+            else {
+                if (foundFromNode != checkedNodes.end()) {
+                    connectedNodes[foundFromNode->second].push_back(it->getFrom());
+                }
+                else if (foundToNode != checkedNodes.end()) {
+                    connectedNodes[foundToNode->second].push_back(it->getTo());
+                }
+            }
+
+            checkedNodes[it->getFrom()] = group;
+            checkedNodes[it->getTo()] = group;
+        }
+
+        //find vector with 2 nodes
+        for (int i = 0; i < connectedNodes.size(); i++) {
+            if (connectedNodes[i].size() == 2) {
+                score += calulatedWeightPerNode[connectedNodes[i][0]];
+                cout << "found unconnected nodes weight: " << calulatedWeightPerNode[connectedNodes[i][0]] << endl << endl;
+            }
+        }
+
+        //add their edge value again
     }
 
     return K;

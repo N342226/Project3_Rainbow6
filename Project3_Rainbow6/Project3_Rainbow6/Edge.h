@@ -3,18 +3,18 @@
 
 class Edge{
 private:
-	int weight;
+	float weight;
 	Node* from;
 	Node* to;
 public:
-	Edge(Node* from, Node* to, int weight);
-	int getWeight();
+	Edge(Node* from, Node* to, float weight);
+	float getWeight();
 	Node* getFrom();
 	Node* getTo();
 	float calculateRating();
 };
 
-Edge::Edge(Node* from, Node* to, int weight) {
+Edge::Edge(Node* from, Node* to, float weight) {
 	this->from = from;
 	this->to = to;
 	this->weight = weight;
@@ -24,7 +24,7 @@ float Edge::calculateRating() {
 	return (from->getSize().first + to->getSize().first) * weight;
 }
 
-int Edge::getWeight() {
+float Edge::getWeight() {
 	return weight;
 }
 
