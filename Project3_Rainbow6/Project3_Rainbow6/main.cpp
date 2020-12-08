@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <queue>
+#include <chrono>
 #include "database.h"
 #include "metaTeamComps.h"
 #include "HashMap.h"
@@ -15,7 +16,8 @@ DATA STRUCTURES USED:
 
 ALGORITHMS USED:
 1. Bubble sort
-2. Prim's
+2. Kruskal's
+3. bfs
 */
 
 void drawTo(sf::Texture, sf::RenderWindow&, int, int, float);
@@ -65,6 +67,58 @@ void calulateIdealTeam(vector<pair<int, priority_queue<pair<float, string>>>>& w
 }
 
 int main() {
+	vector<string> exampleNames = { "Charles", "Robert", "Football", "Susurrus", "Parrallax" };
+	vector<player> examplePlayers;
+
+	for (int i = 0; i < exampleNames.size(); i++) {
+		examplePlayers.push_back(player(exampleNames[i]));
+	}
+
+	int dbSize;
+	cout << "Enter size of database: ";
+	cin >> dbSize;
+	//dbSize = 10;
+	chrono::steady_clock::time_point begin = chrono::steady_clock::now();
+
+	database db = database(examplePlayers, dbSize);
+
+	chrono::steady_clock::time_point end = chrono::steady_clock::now();
+	cout << "Time elapsed = " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+	vector<player> dbResult = db.getDatabase();
+	metaTeamComps metaTeams = metaTeamComps(dbResult);
+
+	/*HashMap table = HashMap();
+	for (int i = 0; i < dbResult.size(); i++) {
+		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
+	}*/
+
+	cout << "Hashing default map..." << endl;
+	begin = chrono::steady_clock::now();
+	unordered_map<string, player> autoMap;
+	for (int i = 0; i < dbResult.size(); i++) {
+		autoMap[dbResult[i].getName()] = dbResult[i];
+	}
+
+	end = chrono::steady_clock::now();
+	cout << "Time elapsed = " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+	string playerNames[5];
+	string map;
+	int team;
+	cout << endl;
+
+	//cout << "Enter Team (0 = Defense, 1 = Attack): " << endl;
+	//cin >> team;
+	//cout << "0" << endl;
+	//team = 0;
+
+	//cout << "Enter Map: " << endl;
+	//cin >> map;
+	//cout << "Bank" << endl;
+	//map = "Bank";
+
+	//START SFML
 	sf::RenderWindow window(sf::VideoMode(1600, 1080), "SFML works!"); //Creating the window
 
 	//Getting all the operator icons
@@ -72,178 +126,178 @@ int main() {
 	sf::Texture operatorIcon;
 	std::string name;
 	if (!operatorIcon.loadFromFile("../Pictures/operators/ace.png")) {}
-	name = "ace";
+	name = "Ace";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/alibi.png")) {}
-	name = "alibi";
+	name = "Alibi";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/amaru.png")) {}
-	name = "amaru";
+	name = "Amaru";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/aruni.png")) {}
-	name = "aruni";
+	name = "Aruni";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/ash.png")) {}
-	name = "ash";
+	name = "Ash";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/bandit.png")) {}
-	name = "bandit";
+	name = "Bandit";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/blackbeard.png")) {}
-	name = "blackbeard";
+	name = "Blackbeard";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/blitz.png")) {}
-	name = "blitz";
+	name = "Blitz";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/buck.png")) {}
-	name = "buck";
+	name = "Buck";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/capitao.png")) {}
-	name = "capitao";
+	name = "Capitao";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/castle.png")) {}
-	name = "castle";
+	name = "Castle";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/caveira.png")) {}
-	name = "caveira";
+	name = "Caveira";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/clash.png")) {}
-	name = "clash";
+	name = "Clash";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/doc.png")) {}
-	name = "doc";
+	name = "Doc";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/dokkaebi.png")) {}
-	name = "dokkaebi";
+	name = "Dokkaebi";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/echo.png")) {}
-	name = "echo";
+	name = "Echo";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/ela.png")) {}
-	name = "ela";
+	name = "Ela";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/finka.png")) {}
-	name = "finka";
+	name = "Finka";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/frost.png")) {}
-	name = "frost";
+	name = "Frost";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/fuze.png")) {}
-	name = "fuze";
+	name = "Fuze";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/glaz.png")) {}
-	name = "glaz";
+	name = "Glaz";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/goyo.png")) {}
-	name = "goyo";
+	name = "Goyo";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/gridlock.png")) {}
-	name = "gridlock";
+	name = "Gridlock";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/hibana.png")) {}
-	name = "hibana";
+	name = "Hibana";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/iana.png")) {}
-	name = "iana";
+	name = "Iana";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/iq.png")) {}
-	name = "iq";
+	name = "Iq";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/jackal.png")) {}
-	name = "jackal";
+	name = "Jackal";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/jager.png")) {}
-	name = "jager";
+	name = "Jager";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/kaid.png")) {}
-	name = "kaid";
+	name = "Kaid";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/kali.png")) {}
-	name = "kali";
+	name = "Kali";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/kapkan.png")) {}
-	name = "kapkan";
+	name = "Kapkan";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/lesion.png")) {}
-	name = "lesion";
+	name = "Lesion";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/lion.png")) {}
-	name = "lion";
+	name = "Lion";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/maestro.png")) {}
-	name = "maestro";
+	name = "Maestro";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/maverick.png")) {}
-	name = "maverick";
+	name = "Maverick";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/melusi.png")) {}
-	name = "melusi";
+	name = "Melusi";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/mira.png")) {}
-	name = "mira";
+	name = "Mira";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/montagne.png")) {}
-	name = "montagne";
+	name = "Montagne";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/mozzie.png")) {}
-	name = "mozzie";
+	name = "Mozzie";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/mute.png")) {}
-	name = "mute";
+	name = "Mute";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/nokk.png")) {}
-	name = "nokk";
+	name = "Nokk";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/nomad.png")) {}
-	name = "nomad";
+	name = "Nomad";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/oryx.png")) {}
-	name = "oryx";
+	name = "Oryx";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/pulse.png")) {}
-	name = "pulse";
+	name = "Pulse";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/rook.png")) {}
-	name = "rook";
+	name = "Rook";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/sledge.png")) {}
-	name = "sledge";
+	name = "Sledge";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/smoke.png")) {}
-	name = "smoke";
+	name = "Smoke";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/tachanka.png")) {}
-	name = "tachanka";
+	name = "Tachanka";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/thatcher.png")) {}
-	name = "thatcher";
+	name = "Thatcher";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/thermite.png")) {}
-	name = "thermite";
+	name = "Thermite";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/twitch.png")) {}
-	name = "twitch";
+	name = "Twitch";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/valkyrie.png")) {}
-	name = "valkyrie";
+	name = "Valk";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/vigil.png")) {}
-	name = "vigil";
+	name = "Vigil";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/wamai.png")) {}
-	name = "wamai";
+	name = "Wamai";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/warden.png")) {}
-	name = "warden";
+	name = "Warden";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/ying.png")) {}
-	name = "ying";
+	name = "Ying";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/zero.png")) {}
-	name = "zero";
+	name = "Zero";
 	operatorIcons.emplace(name, operatorIcon);
 	if (!operatorIcon.loadFromFile("../Pictures/operators/zofia.png")) {}
-	name = "zofia";
+	name = "Zofia";
 	operatorIcons.emplace(name, operatorIcon);
 
 	//Getting all the map icons
@@ -321,6 +375,23 @@ int main() {
 	bool isMapChosen = false, isAttackDefense = false, generate = false, defaultTeam = false;
 	std::string mapChose = "", attackDefense = "";
 
+	vector<string> idealTeam;
+	bool metaTeamMade = false;
+
+	unordered_map<string, string> allResult;
+	unordered_map<string, string> metaResult;
+	unordered_map<string, string> kruskalsResult;
+	unordered_map<string, string> bfsResult;
+	bool teamsMade = false;
+
+	float scoreBasic = 0;
+	float scoreMeta = 0;
+	float scoreKruskal = 0;
+	int numSynergies = 0;
+	float scoreBruteForce = 0;
+
+	bool generatedRandomNames = false;
+
 	while (window.isOpen())
 	{
 		//Makes the background
@@ -344,6 +415,48 @@ int main() {
 		//Displays the screen if it was generated
 		if (isMapChosen && isAttackDefense && generate)
 		{
+			/*window.setSize(sf::Vector2u(1920, 1080));
+			window.setPosition(sf::Vector2i(0, 0));
+			backgroundRect.setSize(sf::Vector2f(1920.f, 1080.f));
+			window.draw(backgroundRect);*/
+
+			if (!metaTeamMade) {
+				cout << endl << "----------------" << endl << endl;
+				cout << "Map: " << map << endl;
+				cout << "Team: " << team << endl;
+				cout << endl << "Meta Team Composition:" << endl;
+				idealTeam = metaTeams.idealOperators(map, team);
+				for (int i = 0; i < 5; i++) {
+					cout << idealTeam[i] << endl;
+				}
+				cout << endl;
+
+				scoreBasic = 0;
+				scoreMeta = 0;
+				scoreKruskal = 0;
+				numSynergies = 0;
+				scoreBruteForce = 0;
+
+				/*cout << "Enter Player 1's name: " << endl;
+				//cout << "Charles" << endl;
+				//playerNames[0] = "Charles";
+				cout << "Enter Player 2's name: " << endl;
+				//cout << "Robbie" << endl;
+				//playerNames[1] = "Robbie";
+				cout << "Enter Player 3's name: " << endl;
+				//cout << "Football" << endl;
+				//playerNames[2] = "Football";
+				cout << "Enter Player 4's name: " << endl;
+				//cout << "Susurrus" << endl;
+				//playerNames[3] = "Susurrus";
+				cout << "Enter Player 5's name: " << endl;
+				//cout << "Bob" << endl;
+				//playerNames[4] = "Bob";
+				cout << endl;*/
+
+				metaTeamMade = true;
+			}
+
 			//Generates all of the base info on the screen
 			text.setCharacterSize(40);
 			text.setString("Players:");
@@ -355,7 +468,7 @@ int main() {
 			text.setString("Best Operator Winrates");
 			text.setPosition(710.0f, 0.0f);
 			window.draw(text);
-			text.setString("Best Overall Synergies");
+			text.setString("Best Overall Synergies\n Kruskal's     BFS");
 			text.setPosition(1163.0f, 0.0f);
 			window.draw(text);
 			sf::RectangleShape box;
@@ -384,74 +497,249 @@ int main() {
 			window.draw(text);
 
 			//Checks whether to display the default team or a random one
-			text.setCharacterSize(60);
+			text.setCharacterSize(40);
 			if (defaultTeam)
 			{
 				//Draws the default names
 				text.setPosition(sf::Vector2f(5.0f, 100.0f));
 				text.setString("Robert");
+				//cout << "Player 1: Robert" << endl;
+				playerNames[0] = "Robert";
 				window.draw(text);
+
 				text.setPosition(sf::Vector2f(5.0f, 260.0f));
 				text.setString("Charles");
+				//cout << "Player 2: Charles" << endl;
+				playerNames[1] = "Charles";
 				window.draw(text);
+
 				text.setPosition(sf::Vector2f(5.0f, 420.0f));
 				text.setString("Susurrus");
+				//cout << "Player 3: Susurrus" << endl;
+				playerNames[2] = "Susurrus";
 				window.draw(text);
+
 				text.setPosition(sf::Vector2f(5.0f, 580.0f));
 				text.setString("Football");
+				//cout << "Player 4: Football" << endl;
+				playerNames[3] = "Football";
 				window.draw(text);
+
 				text.setPosition(sf::Vector2f(5.0f, 760.0f));
 				text.setString("Parrallax");
+				//cout << "Player 5: Parrallax" << endl;
+				playerNames[4] = "Parrallax";
 				window.draw(text);
 
 				sf::Sprite opIcon;
-				if (attackDefense == "Attack")
-				{
-					drawTo(operatorIcons.at("blackbeard"), window, 410, 80, 0.1f);
-					drawTo(operatorIcons.at("finka"), window, 410, 240, 0.1f);
-					drawTo(operatorIcons.at("twitch"), window, 410, 400, 0.1f);
-					drawTo(operatorIcons.at("ash"), window, 410, 560, 0.1f);
-					drawTo(operatorIcons.at("thatcher"), window, 410, 740, 0.1f);
-
-					drawTo(operatorIcons.at("blackbeard"), window, 820, 80, 0.1f);
-					drawTo(operatorIcons.at("ace"), window, 820, 240, 0.1f);
-					drawTo(operatorIcons.at("nomad"), window, 820, 400, 0.1f);
-					drawTo(operatorIcons.at("hibana"), window, 820, 560, 0.1f);
-					drawTo(operatorIcons.at("iana"), window, 820, 740, 0.1f);
-
-					drawTo(operatorIcons.at("glaz"), window, 1273, 80, 0.1f);
-					drawTo(operatorIcons.at("ace"), window, 1273, 240, 0.1f);
-					drawTo(operatorIcons.at("thatcher"), window, 1273, 400, 0.1f);
-					drawTo(operatorIcons.at("nomad"), window, 1273, 560, 0.1f);
-					drawTo(operatorIcons.at("zofia"), window, 1273, 740, 0.1f);
-				}
-				else
-				{
-					drawTo(operatorIcons.at("alibi"), window, 410, 80, 0.1f);
-					drawTo(operatorIcons.at("jager"), window, 410, 240, 0.1f);
-					drawTo(operatorIcons.at("lesion"), window, 410, 400, 0.1f);
-					drawTo(operatorIcons.at("doc"), window, 410, 560, 0.1f);
-					drawTo(operatorIcons.at("caveira"), window, 410, 740, 0.1f);
-
-					drawTo(operatorIcons.at("rook"), window, 820, 80, 0.1f);
-					drawTo(operatorIcons.at("melusi"), window, 820, 240, 0.1f);
-					drawTo(operatorIcons.at("valkyrie"), window, 820, 400, 0.1f);
-					drawTo(operatorIcons.at("jager"), window, 820, 560, 0.1f);
-					drawTo(operatorIcons.at("ela"), window, 820, 740, 0.1f);
-
-					drawTo(operatorIcons.at("valkyrie"), window, 1273, 80, 0.1f);
-					drawTo(operatorIcons.at("mute"), window, 1273, 240, 0.1f);
-					drawTo(operatorIcons.at("jager"), window, 1273, 400, 0.1f);
-					drawTo(operatorIcons.at("maestro"), window, 1273, 560, 0.1f);
-					drawTo(operatorIcons.at("smoke"), window, 1273, 740, 0.1f);
-				}
+					
 			}
 
 			else
 			{
-				//Get 5 random names from the hashmap
+				if (!generatedRandomNames) {
+					set<string> checkedNames;
+
+					while (checkedNames.size() < 5) {
+						auto it = autoMap.begin();
+						std::advance(it, rand() % autoMap.size());
+						checkedNames.insert(it->first);
+					}
+
+					int i = 0;
+					for (auto it : checkedNames) {
+						playerNames[i] = it;
+						i++;
+
+						//cout << "Random Player: " << it << endl;
+					}
+
+					generatedRandomNames = true;
+				}
+				
+
+				//Draws the default names
+				text.setPosition(sf::Vector2f(5.0f, 100.0f));
+				text.setString(playerNames[0]);
+				window.draw(text);
+
+				text.setPosition(sf::Vector2f(5.0f, 260.0f));
+				text.setString(playerNames[1]);
+				window.draw(text);
+
+				text.setPosition(sf::Vector2f(5.0f, 420.0f));
+				text.setString(playerNames[2]);
+				window.draw(text);
+
+				text.setPosition(sf::Vector2f(5.0f, 580.0f));
+				text.setString(playerNames[3]);
+				window.draw(text);
+
+				text.setPosition(sf::Vector2f(5.0f, 760.0f));
+				text.setString(playerNames[4]);
+				window.draw(text);
+
+				sf::Sprite opIcon;
 
 			}
+
+			if (!teamsMade) {
+				cout << endl << "Based on players:" << endl << endl;
+				/*----BASED ON PLAYER------*/
+				begin = chrono::steady_clock::now();
+				vector<pair<int, priority_queue<pair<float, string>>>> winRatesAll(5); //I hate myself
+				for (int i = 0; i < 5; i++) { //players
+					if (team == 0) { //all defense operators
+						for (int j = 0; j < defenseOperatorSize; j++) { //all operators
+							winRatesAll[i].first = i;
+							winRatesAll[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(defenseOperators[j]), defenseOperators[j] });
+							//cout << idealTeam[j] << ": ";
+							//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+						}
+					}
+					else if (team == 1) { //all attack operators
+						for (int j = 0; j < attackOperatorSize; j++) { //all operators
+							winRatesAll[i].first = i;
+							winRatesAll[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(attackOperators[j]), attackOperators[j] });
+							//cout << idealTeam[j] << ": ";
+							//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+						}
+					}
+
+					//cout << endl;
+				}
+
+				calulateIdealTeam(winRatesAll);
+
+				for (int i = 0; i < 5; i++) {
+					allResult[playerNames[winRatesAll[i].first]] = winRatesAll[i].second.top().second;
+					cout << playerNames[winRatesAll[i].first] << ": " << winRatesAll[i].second.top().second << endl;
+					scoreBasic += winRatesAll[i].second.top().first;
+				}
+				cout << "Team Score: " << scoreBasic / 5 << endl; //doesnt check for meta characters or synergies (could be higher)
+
+				end = chrono::steady_clock::now();
+				cout << "Time elapsed = " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+
+
+
+				/*-------BASED ON OPERATOR------*/
+				begin = chrono::steady_clock::now();
+				cout << endl << "Based on operators:" << endl << endl;
+				vector<pair<int, priority_queue<pair<float, string>>>> winRatesMeta(5);
+				for (int i = 0; i < 5; i++) { //players
+					for (int j = 0; j < 5; j++) { //meta operators
+						winRatesMeta[i].first = i;
+						winRatesMeta[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j]), idealTeam[j] });
+						//cout << idealTeam[j] << ": ";
+						//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+					}
+					//cout << endl;
+				}
+
+				calulateIdealTeam(winRatesMeta);
+
+				for (int i = 0; i < 5; i++) {
+					metaResult[playerNames[winRatesMeta[i].first]] = winRatesMeta[i].second.top().second;
+					cout << playerNames[winRatesMeta[i].first] << ": " << winRatesMeta[i].second.top().second << endl;
+					scoreMeta += winRatesMeta[i].second.top().first;
+				}
+				cout << "Team Score: " << (scoreMeta + 50) / 5 << endl; //doesnt check for synergies (could be higher) and 50 was chosen as an abitrary bonus for using meta comp
+
+				end = chrono::steady_clock::now();
+				cout << "Time elapsed = " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+
+
+
+				/*----BASED ON SYNERGIES (KRUSKALS)-----*/
+				begin = chrono::steady_clock::now();
+				cout << endl << "Based on kruskal's: " << endl << endl;
+				vector<player> players(5);
+				for (int i = 0; i < 5; i++) {
+					players[i] = autoMap[playerNames[i]];
+				}
+
+				Graph testGraph = Graph(players, team);
+				numSynergies = 0; //can either be 3 or 4 depending on how which edges are picked
+				unordered_set<Node*> kruskal = testGraph.kruskalDeviation(numSynergies, scoreKruskal);
+
+				for (auto it : kruskal) {
+					kruskalsResult[it->getSize().second] = it->getOperatorName();
+					cout << it->getSize().second << ": " << it->getOperatorName() << endl;
+				}
+				cout << "Team Score: " << (scoreKruskal + numSynergies * 5) / numSynergies << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily
+
+				end = chrono::steady_clock::now();
+				cout << "Time elapsed = " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+
+
+
+				/*----BASED ON SYNERGIES (BFS)-----*/
+				begin = chrono::steady_clock::now();
+				cout << endl << "based on bfs:" << endl << endl;
+				Graph2 testGraph2 = Graph2(players, team);
+				auto bruteForce = testGraph2.bruteForce(scoreBruteForce);
+
+				for (int i = 0; i < bruteForce.size(); i++) {
+					bfsResult[bruteForce[i]->getSize().second] = bruteForce[i]->getOperatorName();
+					cout << bruteForce[i]->getSize().second << ": " << bruteForce[i]->getOperatorName() << endl;
+				}
+				cout << "Team Score: " << (scoreBruteForce + 4 * 5) / 4 << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily (always 4 synergies)*/
+
+				end = chrono::steady_clock::now();
+				cout << "Time elapsed = " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+
+
+				teamsMade = true;
+			}
+
+			drawTo(operatorIcons.at(allResult[playerNames[0]]), window, 410, 80, 0.1f);
+			drawTo(operatorIcons.at(allResult[playerNames[1]]), window, 410, 240, 0.1f);
+			drawTo(operatorIcons.at(allResult[playerNames[2]]), window, 410, 400, 0.1f);
+			drawTo(operatorIcons.at(allResult[playerNames[3]]), window, 410, 560, 0.1f);
+			drawTo(operatorIcons.at(allResult[playerNames[4]]), window, 410, 740, 0.1f);
+
+			//OPERATOR WIN RATES
+			drawTo(operatorIcons.at(metaResult[playerNames[0]]), window, 820, 80, 0.1f);
+			drawTo(operatorIcons.at(metaResult[playerNames[1]]), window, 820, 240, 0.1f);
+			drawTo(operatorIcons.at(metaResult[playerNames[2]]), window, 820, 400, 0.1f);
+			drawTo(operatorIcons.at(metaResult[playerNames[3]]), window, 820, 560, 0.1f);
+			drawTo(operatorIcons.at(metaResult[playerNames[4]]), window, 820, 740, 0.1f);
+
+			//KRUSKALS
+			drawTo(operatorIcons.at(kruskalsResult[playerNames[0]]), window, 1173, 80, 0.1f);
+			drawTo(operatorIcons.at(kruskalsResult[playerNames[1]]), window, 1173, 240, 0.1f);
+			drawTo(operatorIcons.at(kruskalsResult[playerNames[2]]), window, 1173, 400, 0.1f);
+			drawTo(operatorIcons.at(kruskalsResult[playerNames[3]]), window, 1173, 560, 0.1f);
+			drawTo(operatorIcons.at(kruskalsResult[playerNames[4]]), window, 1173, 740, 0.1f);
+
+			//BFS
+			drawTo(operatorIcons.at(bfsResult[playerNames[0]]), window, 1373, 80, 0.1f);
+			drawTo(operatorIcons.at(bfsResult[playerNames[1]]), window, 1373, 240, 0.1f);
+			drawTo(operatorIcons.at(bfsResult[playerNames[2]]), window, 1373, 400, 0.1f);
+			drawTo(operatorIcons.at(bfsResult[playerNames[3]]), window, 1373, 560, 0.1f);
+			drawTo(operatorIcons.at(bfsResult[playerNames[4]]), window, 1373, 740, 0.1f);
+
+			text.setCharacterSize(25);
+			text.setPosition(sf::Vector2f(410.0f, 864.0f));
+			text.setString(to_string(scoreMeta / 5));
+			window.draw(text);
+			text.setCharacterSize(25);
+			text.setPosition(sf::Vector2f(820.0f, 864.0f));
+			text.setString(to_string((scoreMeta + 50) / 5));
+			window.draw(text);
+			text.setCharacterSize(25);
+			text.setPosition(sf::Vector2f(1188.0f, 864.0f));
+			text.setString(to_string((scoreKruskal + numSynergies * 5) / numSynergies));
+			window.draw(text);
+			text.setCharacterSize(25);
+			text.setPosition(sf::Vector2f(1388.0f, 864.0f));
+			text.setString(to_string((scoreBruteForce + 4 * 5) / 4));
+			window.draw(text);
 
 			//Creates the event loop
 			sf::Event event;
@@ -466,6 +754,13 @@ int main() {
 				if (xval >= 0 && xval <= 500 && yval >= 910)
 				{
 					defaultTeam = true;
+					teamsMade = false;
+					generatedRandomNames = false;
+					scoreBasic = 0;
+					scoreMeta = 0;
+					scoreKruskal = 0;
+					numSynergies = 0;
+					scoreBruteForce = 0;
 				}
 
 				//If Star Over button is pressed, resets back to the original screen
@@ -475,6 +770,9 @@ int main() {
 					isAttackDefense = false;
 					generate = false;
 					defaultTeam = false;
+					metaTeamMade = false;
+					teamsMade = false;
+					generatedRandomNames = false;
 				}
 			}
 		}
@@ -517,11 +815,15 @@ int main() {
 						if (xval <= 800)
 						{
 							attackDefense = "Defense";
+							team = 0;
 						}
 						else
 						{
 							attackDefense = "Attack";
+							team = 1;
 						}
+
+						//cout << team << endl;
 					}
 
 					else if (yval >= 300 && yval <= 900) //checks if the mouse click y coordinate is in the map icon range
@@ -543,6 +845,9 @@ int main() {
 						{
 							mapChose = mapKeys.at(4 * (1 + (yval - 300) / 120));
 						}
+
+						map = mapChose;
+						//cout << mapChose << endl;
 					}
 
 					else if (yval >= 900 && yval <= 1080 && xval >= 600 && xval <= 1000)
@@ -553,62 +858,10 @@ int main() {
 			}
 		}
 
-
-
 		window.display();
 	}
 
-	vector<string> exampleNames = { "Charles", "Robbie", "Football", "Susurrus", "Bob" };
-	vector<player> examplePlayers;
-
-	for (int i = 0; i < exampleNames.size(); i++) {
-		examplePlayers.push_back(player(exampleNames[i]));
-	}
-
-	int dbSize;
-	cout << "Enter size of database: ";
-	//cin >> dbSize;
-	cout << 10 << endl;
-	dbSize = 10;
-
-	database db = database(examplePlayers, dbSize);
-	vector<player> dbResult = db.getDatabase();
-	metaTeamComps metaTeams = metaTeamComps(dbResult);
-
-	/*HashMap table = HashMap();
-	for (int i = 0; i < dbResult.size(); i++) {
-		table.getHMap() = table.insertPlayer(dbResult.at(i), table.getHMap());
-	}*/
-
-	cout << "Hashing default map..." << endl;
-	unordered_map<string, player> autoMap;
-	for (int i = 0; i < dbResult.size(); i++) {
-		autoMap[dbResult[i].getName()] = dbResult[i];
-	}
-
-	//Getting and outputting Player Info
-	string playerNames[5];
-	string map;
-	int team;
-	cout << endl;
-	cout << "Enter Map: ";
-	//cin >> map;
-	cout << "Bank" << endl;
-	map = "Bank";
-
-	cout << "Enter Team (0 = Defense, 1 = Attack): ";
-	//cin >> team;
-	cout << "0" << endl;
-	team = 0;
-
-	cout << endl << "Meta Team Composition:" << endl;
-	vector<string> idealTeam = metaTeams.idealOperators(map, team);
-	for (int i = 0; i < 5; i++) {
-		cout << idealTeam[i] << endl;
-	}
-	cout << endl;
-
-	cout << "Enter Player 1's name: ";
+	/*cout << "Enter Player 1's name: ";
 	cout << "Charles" << endl;
 	playerNames[0] = "Charles";
 	cout << "Enter Player 2's name: ";
@@ -624,30 +877,6 @@ int main() {
 	cout << "Bob" << endl;
 	playerNames[4] = "Bob";
 	cout << endl;
-
-	/*for (int i = 0; i < 5; i++) {
-		cout << "Enter Player " << i + 1 << "'s name: ";
-		cin >> playerNames[i];
-	}*/
-
-	//Get player info
-	/*player pl1, pl2, pl3, pl4, pl5;
-	pl1 = table.retrievePlayerInfo(p1);
-	pl2 = table.retrievePlayerInfo(p2);
-	pl3 = table.retrievePlayerInfo(p3);
-	pl4 = table.retrievePlayerInfo(p4);
-	pl5 = table.retrievePlayerInfo(p5);*/
-
-	vector<pair<int, priority_queue<pair<float, string>>>> winRatesMeta(5); //I hate myself
-	for (int i = 0; i < 5; i++) { //players
-		for (int j = 0; j < 5; j++) { //meta operators
-			winRatesMeta[i].first = i;
-			winRatesMeta[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j]), idealTeam[j] });
-			//cout << idealTeam[j] << ": ";
-			//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
-		}
-		//cout << endl;
-	}
 
 	vector<pair<int, priority_queue<pair<float, string>>>> winRatesAll(5);
 	for (int i = 0; i < 5; i++) { //players
@@ -667,19 +896,10 @@ int main() {
 				//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
 			}
 		}
-		
+
 		//cout << endl;
 	}
 
-	/*cout << "-----------" << endl << endl;
-
-	while(!winRates[0].second.empty()){
-		cout << winRates[0].second.top().second << ": " << winRates[0].second.top().first << endl;
-		winRates[0].second.pop();
-	}
-	cout << endl;*/
-
-	calulateIdealTeam(winRatesMeta);
 	calulateIdealTeam(winRatesAll);
 
 	cout << "------------" << endl << endl;
@@ -693,7 +913,26 @@ int main() {
 	}
 	cout << "Team Score: " << scoreBasic / 5 << endl; //doesnt check for meta characters or synergies (could be higher)
 
-	cout << endl <<"Based On Meta Compositions: " << endl;
+
+
+
+
+
+
+	vector<pair<int, priority_queue<pair<float, string>>>> winRatesMeta(5); //I hate myself
+	for (int i = 0; i < 5; i++) { //players
+		for (int j = 0; j < 5; j++) { //meta operators
+			winRatesMeta[i].first = i;
+			winRatesMeta[i].second.push({ autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j]), idealTeam[j] });
+			//cout << idealTeam[j] << ": ";
+			//cout << autoMap[playerNames[i]].getOperatorWinRate(idealTeam[j], map) << endl;
+		}
+		//cout << endl;
+	}
+
+	calulateIdealTeam(winRatesMeta);
+
+	cout << endl << "Based On Meta Compositions: " << endl;
 
 	float scoreMeta = 0;
 	for (int i = 0; i < 5; i++) {
@@ -701,6 +940,13 @@ int main() {
 		scoreMeta += winRatesMeta[i].second.top().first;
 	}
 	cout << "Team Score: " << (scoreMeta + 50) / 5 << endl; //doesnt check for synergies (could be higher) and 50 was chosen as an abitrary bonus for using meta comp
+
+
+
+
+
+
+
 
 	vector<player> players(5);
 	for (int i = 0; i < 5; i++) {
@@ -717,6 +963,12 @@ int main() {
 	}
 	cout << "Team Score: " << (scoreKruskal + numSynergies*5) / numSynergies << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily
 	
+
+
+
+
+
+
 	cout << endl << "-----------" << endl;
 
 	Graph2 testGraph2 = Graph2(players, team);
@@ -727,7 +979,7 @@ int main() {
 	for (int i = 0; i < bruteForce.size(); i++) {
 		cout << bruteForce[i]->getSize().second << ": " << bruteForce[i]->getOperatorName() << endl;
 	}
-	cout << "Team Score: " << (scoreBruteForce + 4*5) / 4 << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily (always 4 synergies)
+	cout << "Team Score: " << (scoreBruteForce + 4*5) / 4 << endl; //doesnt check meta characters (could be higher) and chose 5 per synergy arbitrarily (always 4 synergies)*/
 	
 	return 0;
 }

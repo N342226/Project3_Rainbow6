@@ -102,6 +102,7 @@ float player::getOperatorWinRate(string operatorName) {
 		}
 	}
 	else {
+		cout << operatorName << endl;
 		return 0;
 	}
 	return result / (i + 1);

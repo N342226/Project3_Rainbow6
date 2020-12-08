@@ -37,7 +37,7 @@ metaTeamComps::metaTeamComps(vector<player> db) {
 		for (int m = 0; m < mapSize; m++) { //iterate through each map
 
 			for (int d = 0; d < defenseOperatorSize; d++) {
-				defenseWinRates[m][d] += db[i].getOperatorWinRate(defenseOperators[d], m); //get each defence operator on each map of this player
+				defenseWinRates[m][d] += db[i].getOperatorWinRate(defenseOperators[d], m); //get each defense operator on each map of this player
 				if (i != 0) {
 					defenseWinRates[m][d] /= 2; //skip the first iteration and average results afterwards 
 				}
@@ -66,7 +66,7 @@ metaTeamComps::metaTeamComps(vector<player> db) {
 	for (int i = 0; i < attackWinRates.size(); i++) { 
 		for (int j = 0; j < 5; j++) {
 			int maxIndex = max_element(attackWinRates[i].begin(), attackWinRates[i].end()) - attackWinRates[i].begin(); 
-			max_D[j] = defenseOperators[maxIndex];
+			max_A[j] = attackOperators[maxIndex];
 			attackWinRates[i][maxIndex] = -1;
 		}
 		metaTeams[maps[i]].second = max_A;

@@ -42,6 +42,7 @@ string Node::getOperatorName() {
 
 void Node::resizeNode() {
 	if (!size.empty()) {
+		//cout << "resizing..." << endl;
 		size.pop();
 	}
 }

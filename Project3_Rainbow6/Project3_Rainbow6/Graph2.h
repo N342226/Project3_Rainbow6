@@ -60,7 +60,8 @@ vector<tuple<Node*, float, float>> Graph2::bfs(map < Node*, vector < tuple<Node*
 		tuple<Node*, float, float> u = q.front();
 		result.push_back(u);
 		traversal.push_back(get<0>(u));
-		cout << "Node " << i << ": " << get<0>(u)->getOperatorName() << " | " << get<0>(u)->getSize().second << endl;
+		//cout << get<0>(u)->getSizeLength() << endl;
+		//cout << "Node " << i << ": " << get<0>(u)->getOperatorName() << " | " << get<0>(u)->getSize().second << endl;
 
 		if (get<0>(u)->getSize().second != "") {
 			namesAlreadyChecked.push_back(get<0>(u)->getSize().second);
@@ -127,12 +128,16 @@ vector<Node*> Graph2::bruteForce(float& score) {
 
 	int j = 0;
 	for (auto x : this->adjList) {
-		cout << endl << "---TRAVERSAL " << j++ << "---" << endl;
+		//cout << endl << "---TRAVERSAL " << j++ << "---" << endl;
+
 		map < Node*, vector < tuple<Node*, float, float>>> adjList;
 		WeightedEdges _edges = WeightedEdges(players, team);
-		vector<Edge*> edges = _edges.edges;;
+		vector<Edge*> edges = _edges.edges;
 
 		for (int i = 0; i < edges.size(); i++) {
+			//cout << edges[i]->getFrom()->getOperatorName() << " " << edges[i]->getFrom()->getSizeLength() << endl;
+			//cout << edges[i]->getTo()->getOperatorName() << " " << edges[i]->getTo()->getSizeLength() << endl;
+
 			adjList[edges[i]->getFrom()].push_back({ edges[i]->getTo(), edges[i]->getWeight(), edges[i]->calculateRating() });
 			adjList[edges[i]->getTo()].push_back({ edges[i]->getFrom(), edges[i]->getWeight(), edges[i]->calculateRating() });
 		}
@@ -142,10 +147,10 @@ vector<Node*> Graph2::bruteForce(float& score) {
 
 		float totalRating = 0;
 		for (int i = 0; i < traversal.size(); i++) {
-			cout << get<2>(traversal[i]) << endl;
+			//cout << get<2>(traversal[i]) << endl;
 			totalRating += get<2>(traversal[i]);
 		}
-		cout << "Total: " << totalRating << endl;
+		//cout << "Total: " << totalRating << endl;
 
 		//cout << totalRating << endl << endl;
 

@@ -37,6 +37,7 @@ void database::fillDb(int size) {
     cout << "Generating random database..." << endl;
     while (db.size() <= size) {
         string name = randomString(rand() % 10 + 5); //random string between 5 and 15 characters
+        //cout << name << endl;
         if (usedNames.find(name) == usedNames.end()) {
             usedNames.insert(name);
             db.push_back(player(name));

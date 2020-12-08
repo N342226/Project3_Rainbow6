@@ -64,14 +64,17 @@ void Graph::checkDuplicateNameEdges(Node* from, Node* to) {
 
 void Graph::balance() {
     priority_queue <pair<float, Edge*>> temp;
-
+    //cout << "test1" << endl;
     while (!U.empty()) {
+       // cout << "test2" << endl;
         Edge* edge = U.top().second;
         Node* from = edge->getFrom();
         Node* to = edge->getTo();
+
         checkDuplicateNameEdges(from, to);
 
         for (int i = 0; i < namesAlreadyChecked.size(); i++) {
+            //cout << "test3" << endl;
 
             bool changed = false;
 
@@ -82,7 +85,8 @@ void Graph::balance() {
             }
 
             if (namesAlreadyChecked[i] == to->getSize().second && find(K.begin(), K.end(), to) == K.end()) {
-                //cout << "resize to: found in names already checked and not in K" << endl;
+                //cout << namesAlreadyChecked[i] << endl;
+               // cout << "resize to: found in names already checked and not in K" << endl;
                 to->resizeNode();
                 changed = true;
             }
@@ -109,18 +113,24 @@ void Graph::balance() {
 }
 
 unordered_set<Node*> Graph::kruskalDeviation(int& numSynergies, float& score) {
-    cout << endl << "-----------" << endl;
+    //cout << endl << "-----------" << endl;
     unordered_map<Node*, float> calulatedWeightPerNode;
     unordered_set<Edge*> traversedEdges;
     while (K.size() < 5) {
+        //cout << "test" << endl;
         numSynergies++;
+
+        if (K.size() < 5) {
+            balance();
+        }
+
         if (K.size() == 4) {
-            cout << "---Last Insertion---" << endl;
+            //cout << "---Last Insertion---" << endl;
             priority_queue <pair<float, Edge*>> temp;
             while (!U.empty()) {
-                cout << U.top().second->getFrom()->getOperatorName() << " -> " << U.top().second->getTo()->getOperatorName() << endl;
+                //cout << U.top().second->getFrom()->getOperatorName() << " -> " << U.top().second->getTo()->getOperatorName() << endl;
                 if (K.find(U.top().second->getFrom()) != K.end() || K.find(U.top().second->getTo()) != K.end()) { //if the from or to node is found in list of added nodes
-                    cout << "possible edge" << endl;
+                    //cout << "possible edge" << endl;
                     temp.push(U.top());
                 }
                 U.pop();
@@ -132,11 +142,12 @@ unordered_set<Node*> Graph::kruskalDeviation(int& numSynergies, float& score) {
         traversedEdges.insert(largestEdge.second);
         string fromPlayer = largestEdge.second->getFrom()->getSize().second;
         string toPlayer = largestEdge.second->getTo()->getSize().second;
-        cout << endl <<fromPlayer << " -> " << toPlayer << endl;
+        //cout << endl <<fromPlayer << " -> " << toPlayer << endl;
+
         namesAlreadyChecked.push_back(fromPlayer);
         namesAlreadyChecked.push_back(toPlayer);
 
-        cout << "Edge pushed: " << largestEdge.second->getFrom()->getOperatorName() << " -> " << largestEdge.second->getTo()->getOperatorName() << endl << endl;
+        //cout << "Edge pushed: " << largestEdge.second->getFrom()->getOperatorName() << " -> " << largestEdge.second->getTo()->getOperatorName() << endl << endl;
 
         K.insert(largestEdge.second->getFrom());
         K.insert(largestEdge.second->getTo());
@@ -146,9 +157,6 @@ unordered_set<Node*> Graph::kruskalDeviation(int& numSynergies, float& score) {
 
 
         U.pop();
-        if (K.size() < 4) {
-            balance();
-        }
     }
 
     /*if (numSynergies == 3) { //disconnected edges
